@@ -66,7 +66,7 @@
 					@tap="loadMachineData(-1 * machineId)" src="../../static/image/exchange.png"></image> -->
 			</view>
 			<view ref="readyGo" class="position-absolute col-12 a-center j-center" style="top: 400rpx;transform: scale(0);">
-				<image  style="width: 600rpx;height: 300rpx;" src="../../static/game/readygo.png" mode="widthFix"></image>
+				<image  style="width: 600rpx;height: 300rpx;" src="https://oss.fszhuazhuale.com/oss/game/readygo.png" mode="widthFix"></image>
 			</view>
 			
 			<!-- <view class="a-center j-center position-absolute" style="opacity: 0.9;border-radius: 20rpx;background-color: rgba(38, 38, 38, 0.4);padding:8rpx;bottom: 50rpx;left:10rpx;">
@@ -252,12 +252,12 @@
 			...mapState(['userInfo', 'offsetTime', 'serverConf','gameSet']),
 			gameBtnImage() {
 				if (this.isSubscribe) {
-					return '/static/game/game-yuyue-cancel.png'
+					return 'https://oss.fszhuazhuale.com/oss/game/game-yuyue-cancel.png'
 				}
 				if (!this.player || this.player.userName == this.userInfo.id) {
-					return '/static/game/game-play.png'
+					return 'https://oss.fszhuazhuale.com/oss/game/game-play.png'
 				}
-				return '/static/game/gameing.png'
+				return 'https://oss.fszhuazhuale.com/oss/game/gameing.png'
 			},
 			gameBtnText() {
 

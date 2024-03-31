@@ -91,7 +91,7 @@
 			toComplaintPage(item){
 				if(item.status == 0 && item.complaintStatus == 0){
 					uni.navigateTo({
-						url: '/pages/user/gamerecord/complaint?record=' + encodeURIComponent(JSON.stringify(item)) + '&fromRecord=true'
+						url: '/pages_game/user/gamerecord/complaint?record=' + encodeURIComponent(JSON.stringify(item)) + '&fromRecord=true'
 					})  
 				}
 			},

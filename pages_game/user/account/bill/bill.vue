@@ -9,7 +9,7 @@
 		<dz-tabs :list="tabList" :current="current" :is-scroll="false" bar-height="8" :active-color="theme.dzBaseColor"
 			@change="tabChange" style="position: fixed;width: 100%;z-index: 2;"></dz-tabs>
 			
-		<!-- #ifndef MP-TOUTIAO -->
+		<!-- #ifdef MP-TOUTIAO -->
 		</view>
 		<!-- #endif -->
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback" @up="upCallback">

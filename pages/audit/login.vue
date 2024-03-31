@@ -4,7 +4,9 @@
 		<dz-navbar title="" :is-back="false" :isFixed="false" :background="{background:''}" :border-bottom="false"></dz-navbar>
 		<!-- #endif -->
 		<view class="wrap">
+			<!-- #ifndef MP-TOUTIAO -->
 			<view v-if="showVisitor" class="position-absolute text-dark" style="right: 50rpx; top:100rpx;z-index: 999;" @click="showModal">游客模式</view>
+			<!-- #endif -->
 			<view class="content">
 				<view class="logo"><image :src="logo" mode="widthFix"></image></view>
 				<view class="dz-flex">
@@ -27,6 +29,7 @@
 					</dz-button>
 				</block>
 				
+				<!-- #ifndef MP-TOUTIAO -->
 				<dz-divider margin-top="250" margin-bottom="30" bg-color="#f3f3f3">其他登录方式</dz-divider>
 				<view>
 					<view v-if="showApple" class="flex j-center a-center bg-black text-center p-2 rounded-15" @click="appleLogin">
@@ -38,6 +41,7 @@
 						<text class="ml-1" style="font-size: 32rpx;color: white;">微信登录</text>
 					</view>
 				</view>
+				<!-- #endif -->
 			</view>
 			<!-- <view class="buttom">
 				<view class="hint">

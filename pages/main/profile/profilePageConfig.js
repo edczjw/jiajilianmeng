@@ -683,7 +683,7 @@ export default{
 						"cover": "/static/icon/set.png",
 						//页面跳转类型jumpType:innerWebview,innerPage
 						"jumpType":"innerPage",
-						"jumpLink":"/pages/user/set/set",
+						"jumpLink":"/pages_game/user/set/set",
 						"needAuth":true,
 						"key":"set"
 					}

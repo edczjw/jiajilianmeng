@@ -27,7 +27,7 @@
 							}" class="dz-flex">
 							<view class="dz-m-r-20">
 								<view>
-									<dz-image :src="'/static/dolllogo.png'" :height="'70rpx'"
+									<dz-image :src="'https://oss.fszhuazhuale.com/oss/dolllogo.png'" :height="'70rpx'"
 										:width="'70rpx'"
 										:borderRadius="'20rpx'"></dz-image>
 								</view>

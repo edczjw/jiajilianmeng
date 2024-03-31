@@ -27,7 +27,7 @@
 				<view class="flex flex-column a-center j-center" style="margin-top: 40rpx;">
 					<!-- <u-loading-icon v-if="refreshing" class="indicator"></u-loading-icon>
 				<image v-else style="width: 50rpx;height: 50rpx;" :style="{transform: downRotate }"  src="https://www.mescroll.com/img/xinlang/mescroll-arrow.png" mode="widthFix"></image> -->
-					<image src="../../../static/gif/refresher_loading.gif" style="width: 60rpx;height: 60rpx;" mode="widthFix">
+					<image src="https://oss.fszhuazhuale.com/oss/refresher_loading.gif" style="width: 60rpx;height: 60rpx;" mode="widthFix">
 					</image>
 					<text class="refreshText" style="font-size: 30rpx;">{{refreshText}}</text>
 				</view>
@@ -68,10 +68,10 @@
 				<!-- <u-gap :height="20"></u-gap> -->
 				<!-- <u-grid :border="false" col="2">
 			  <u-grid-item>
-				  <image style="width: 350rpx;" src="../../../static/index/playWay.png" mode="widthFix"></image>
+				  <image style="width: 350rpx;" src="https://oss.fszhuazhuale.com/oss/index/playWay.png" mode="widthFix"></image>
 			  </u-grid-item>
 			  <u-grid-item>
-			  	  <image style="width: 350rpx;" src="../../../static/index/todayTj.png" mode="widthFix"></image>
+			  	  <image style="width: 350rpx;" src="https://oss.fszhuazhuale.com/oss/index/todayTj.png" mode="widthFix"></image>
 			  </u-grid-item>
 		  </u-grid> -->
 
@@ -171,21 +171,21 @@
 						"title": "钜惠充值",
 						"cover": "/static/image/cz.png",
 						"jumpType": "navigate",
-						"url": "/pages/pay/recharge",
+						"url": "/pages_game/pay/recharge",
 						"path": "recharge"
 					},
 					{
 						"title": "金币口令",
 						"cover": "/static/image/kl.png",
 						"jumpType": "navigate",
-						"url": "/pages/sub/exchangePwd",
+						"url": "/pages_game/sub/exchangePwd",
 						"path": "exchangePwd"
 					},
 					{
 						"title": "娃娃背包",
 						"cover": "/static/image/dollbag.png",
 						"jumpType": "navigate",
-						"url": "/pages/user/doll/dollBag",
+						"url": "/pages_game/user/doll/dollBag",
 						"path": "dollBag"
 					},
 					{
@@ -199,7 +199,7 @@
 						"title": "邀请有礼",
 						"cover": "/static/image/yq.png",
 						"jumpType": "navigate",
-						"url": "/pages/user/poster/poster",
+						"url": "/pages_game/user/poster/poster",
 						"path": "poster"
 					},
 					// {
@@ -214,7 +214,7 @@
 					// 	"title": "我的订单",
 					// 	"cover": "/static/image/kl.png",
 					// 	"jumpType": "navigate",
-					// 	"url": "/pages/user/poster/poster"
+					// 	"url": "/pages_game/user/poster/poster"
 					// } 
 				]
 			}

@@ -129,7 +129,7 @@ export default {
 		const index = e.index;
 		if (index === 0) {
 			uni.navigateTo({
-			    url: '/pages/user/gameRecord/gamerecord'
+			    url: '/pages_game/user/gameRecord/gamerecord'
 			});
 		}
 	}

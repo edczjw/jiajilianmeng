@@ -5,7 +5,7 @@
 		<!-- #endif -->
 		
 		<view class="position-relative">
-			<image  src="../../../static/invite/invite.png" style="width: 750rpx;height: 1333rpx;"></image>
+			<image  src="https://oss.fszhuazhuale.com/oss/invite/invite.png" style="width: 750rpx;height: 1333rpx;"></image>
 			<!-- <image :src="postPath" mode="cover" class="qrcode-box"></image> -->
 			<view class="position-absolute" style="top: 1000rpx;left: 150rpx;z-index: 10;">
 				<view class=" m-3 text-center p-1 rounded-20 shadow-lg font-weight"

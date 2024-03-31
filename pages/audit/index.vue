@@ -33,13 +33,13 @@
 										{{ item.props.leftText }}
 									</view>
 									<view v-if="item.props.leftType == 2">
-										<!-- <dz-image :src="'/static/dolllogo.png'" :height="'70rpx'"
+										<!-- <dz-image :src="'https://oss.fszhuazhuale.com/oss/dolllogo.png'" :height="'70rpx'"
 											:width="'70rpx'"
 											:borderRadius="'20rpx'"></dz-image> -->
 											<dz-image :src="'/static/icon/message.png'" :height="'50rpx'"
 												:width="'50rpx'"
 												:borderRadius="'20rpx'" @tap="messageTap()"></dz-image>
-										<!-- <dz-image :src="'/static/dolllogo.png'" :height="parseInt(item.props.coverHeight)+ 'rpx'"
+										<!-- <dz-image :src="'https://oss.fszhuazhuale.com/oss/dolllogo.png'" :height="parseInt(item.props.coverHeight)+ 'rpx'"
 											:width="parseInt(item.props.coverWidth) + 'rpx'"
 											:borderRadius="parseInt(item.props.borderRadius) * 2"></dz-image> -->
 									</view>

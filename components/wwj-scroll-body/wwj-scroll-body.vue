@@ -19,7 +19,7 @@
 			<!-- <mescroll-down :option="mescroll.optDown" :type="downLoadType"></mescroll-down> -->
 			<view v-if="mescroll.optDown.use" class="mescroll-downwarp" :style="{'background':mescroll.optDown.bgColor,'color':mescroll.optDown.textColor}">
 				<view class="downwarp-content">
-					<image class="position-relative" src="../../static/gif/refresher_loading.gif" style="top: 20rpx;width: 60rpx;" mode="widthFix"></image>
+					<image class="position-relative" src="https://oss.fszhuazhuale.com/oss/refresher_loading.gif" style="top: 20rpx;width: 60rpx;" mode="widthFix"></image>
 					<!-- <view v-if="isDownLoading" class="downwarp-progress"></view> -->
 					<!-- <u-loading-icon v-if="isDownLoading" :size="380" class="downwarp-progress"></u-loading-icon>
 					<view v-else class="downwarp-arrow" :style="{ transform: downRotate }"></view> -->

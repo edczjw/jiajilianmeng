@@ -26,7 +26,7 @@
 			<view ref="reward" class="flex a-center j-center" style="top: 400rpx;">
 				<view class="flex flex-column j-sb a-center col-8 bg-white rounded-20" style="height: 600rpx;">
 					<view class="a-center">
-						<image class="rounded-lg m-1" src="../../static/game/jiayou.png"
+						<image class="rounded-lg m-1" src="https://oss.fszhuazhuale.com/oss/game/jiayou.png"
 							style="width: 300rpx;height: 100rpx;"></image>
 					</view>
 					<view class="a-center">
@@ -48,7 +48,7 @@
 		<u-overlay :show="type==3">
 			<view ref="reward" class="flex flex-column j-center a-center position-relative py-5" style="top: 350rpx;">
 				<view class="a-center">
-					<image src="../../static/game/reward.png"
+					<image src="https://oss.fszhuazhuale.com/oss/game/reward.png"
 						style="width: 500rpx;height: 500rpx;"></image>
 				</view>
 				<view class="a-center position-absolute j-center" style="top: 160rpx;">

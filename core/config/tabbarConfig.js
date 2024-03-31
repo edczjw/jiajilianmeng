@@ -70,7 +70,7 @@ var tabbarList = [{
 	count: 0,
 	isDot: false,
 	midButton: true,
-	pagePath: '/pages/game/game',
+	pagePath: '/pages_game/game/game',
 	jumpType:'navigateTo'
 },
 {

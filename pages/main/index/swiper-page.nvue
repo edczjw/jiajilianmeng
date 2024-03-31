@@ -151,7 +151,7 @@
 					});
 				}else {
 					uni.navigateTo({
-						url: "/pages/game/machine?doll=" + encodeURIComponent(JSON.stringify(item))
+						url: "/pages_game/game/machine?doll=" + encodeURIComponent(JSON.stringify(item))
 					})
 					// this.$emit("popMachineList",item);
 				}

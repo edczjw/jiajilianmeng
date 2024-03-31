@@ -47,28 +47,6 @@
 			}
 		},
 		{
-			"path": "pages/pointsmarket/market",
-			"style": {
-				"navigationBarTitleText": "积分商城",
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					"titleNView": false
-					// "bounce":false
-				}
-			}
-		},
-		{
-			"path": "pages/pointsmarket/detail",
-			"style": {
-				"navigationBarTitleText": "",
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					"titleNView": false
-					// "bounce":false
-				}
-			}
-		},
-		{
 			"path": "pages/main/discover/discover",
 			"style": {
 				"navigationBarTitleText": "",
@@ -80,7 +58,7 @@
 			}
 		},
 		// {
-		// 	"path": "pages/sub/activity",
+		// 	"path": "pages_game/sub/activity",
 		// 	"style": {
 		// 		"navigationBarTitleText": "",
 		// 		"onReachBottomDistance": 50,
@@ -91,7 +69,7 @@
 		// 	}
 		// },
 		// {
-		// 	"path": "pages/sub/h5game",
+		// 	"path": "pages_game/sub/h5game",
 		// 	"style": {
 		// 		"navigationBarTitleText": "欢乐抓",
 		// 		"onReachBottomDistance": 50,
@@ -101,35 +79,7 @@
 		// 		}
 		// 	}
 		// },
-		{
-			"path": "pages/order/order",
-			"style": {
-				"navigationBarTitleText": "",
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					"titleNView": false
-					// "bounce": "none"
-				}
-			}
-		},
-		{
-			"path":"pages/order/orderDetail",
-			"style": {
-				"navigationBarTitleText": "",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path":"pages/order/shipping",
-			"style": {
-				"navigationBarTitleText": "",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
+		
 		{
 			"path": "pages/distribution/distribution",
 			"style": {
@@ -227,52 +177,7 @@
 				// }
     //         }
     //     },
-		{
-			"path": "pages/game/game",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					"titleNView": false,
-					"subNVues":[{
-						"id":"enterGameAnimation",
-						"path":"pages/subnvues/enterGameAnimation",
-						"type":"popup",
-						"style":{
-							"popGesture":"none",
-							"margin":"auto",
-							"width":"100%",
-							"height":"100%",
-							"background":"transparent",
-							"mask": "rgba(0,0,0,0)"
-						}
-					}]
-				}
-			}
-		},{
-            "path" : "pages/game/machine",
-            "style": {
-            	"navigationBarTitleText": "",
-            	"app-plus": {
-            		"titleNView": false
-            		// "bounce":"none"
-            	}
-            }
-            
-        },
-		{
-			"path": "pages/game/dollDetail",
-			"style": {
-				"backgroundColor": "transparent",
-				"app-plus": {
-					"popGesture":"none",
-					"titleNView": false,
-					"background": "transparent",
-					"animationType":"none"
-				}
-			}
-		},
+		
 		{
 			"path": "pages/public/search/search",
 			"style": {
@@ -305,10 +210,33 @@
 					"titleNView": false
 				}
 			}
+		},
+		
+		{
+			"path": "pages/pointsmarket/market",
+			"style": {
+				"navigationBarTitleText": "积分商城",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/pointsmarket/detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
 		}
 		// ,
 		// {
-		// 	"path": "pages/sub/yzgame",
+		// 	"path": "pages_game/sub/yzgame",
 		// 	"style": {
 		// 		"navigationBarTitleText": "牧场",
 		// 		"app-plus":{
@@ -317,12 +245,103 @@
 		// 	}
 		// }
     ],
+	
+	// {
+	// 	"pagePath": "pages/pointsmarket/market",
+	// 	"iconPath": "/static/tabbar/tab-shop.png",
+	// 	"selectedIconPath": "/static/tabbar/tab-shop-selected.png",
+	// 	"text": "商城"
+	// }
 	"subPackages":[
 		{
-			"root":"pages/user",
+			"root":"pages_game",
 			"pages":[
 				{
-					"path":"login/login",
+					"path": "game/game",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"titleNView": false,
+							"subNVues":[{
+								"id":"enterGameAnimation",
+								"path":"pages/subnvues/enterGameAnimation",
+								"type":"popup",
+								"style":{
+									"popGesture":"none",
+									"margin":"auto",
+									"width":"100%",
+									"height":"100%",
+									"background":"transparent",
+									"mask": "rgba(0,0,0,0)"
+								}
+							}]
+						}
+					}
+				},{
+					"path" : "game/machine",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+							// "bounce":"none"
+						}
+					}
+					
+				},
+				{
+					"path": "game/dollDetail",
+					"style": {
+						"backgroundColor": "transparent",
+						"app-plus": {
+							"popGesture":"none",
+							"titleNView": false,
+							"background": "transparent",
+							"animationType":"none"
+						}
+					}
+				},{
+					"path": "order/order",
+					"style": {
+						"navigationBarTitleText": "",
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"titleNView": false
+							// "bounce": "none"
+						}
+					}
+				},
+				{
+					"path":"order/orderDetail",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"order/shipping",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"pay/recharge",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+							// "bounce":"none"
+						}
+					}
+				},
+				{
+					"path":"user/login/login",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -332,7 +351,7 @@
 					}
 				},
 				{
-					"path":"login/phoneLogin",
+					"path":"user/login/phoneLogin",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -342,7 +361,7 @@
 					}
 				},
 				{
-					"path":"login/captcha",
+					"path":"user/login/captcha",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -352,7 +371,7 @@
 					}
 				},
 				{
-					"path":"set/set",
+					"path":"user/set/set",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -361,7 +380,7 @@
 					}
 				},
 				{
-					"path":"collect/collect",
+					"path":"user/collect/collect",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -370,7 +389,7 @@
 					}
 				},
 				{
-					"path":"doll/dollBag",
+					"path":"user/doll/dollBag",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -380,7 +399,7 @@
 					}
 				},
 				{
-					"path":"doll/detail",
+					"path":"user/doll/detail",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -390,7 +409,7 @@
 					}
 				},
 				{
-					"path":"address/address",
+					"path":"user/address/address",
 					"style": {
 						"navigationBarTitleText": "",
 						"onReachBottomDistance": 50,
@@ -401,7 +420,7 @@
 					}
 				},
 				{
-					"path":"address/manage",
+					"path":"user/address/manage",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -410,7 +429,7 @@
 					}
 				},
 				{
-					"path":"account/integral/detail",
+					"path":"user/account/integral/detail",
 					"style": {
 						"navigationBarTitleText": "",
 						"onReachBottomDistance": 50,
@@ -421,7 +440,7 @@
 					}
 				},
 				{
-					"path":"account/bill/bill",
+					"path":"user/account/bill/bill",
 					"style": {
 						"navigationBarTitleText": "",
 						"onReachBottomDistance": 50,
@@ -432,7 +451,7 @@
 					}
 				},
 				{
-					"path":"gamerecord/gamerecord",
+					"path":"user/gamerecord/gamerecord",
 					"style": {
 						"navigationBarTitleText": "",
 						"onReachBottomDistance": 50,
@@ -443,7 +462,7 @@
 					}
 				},
 				{
-					"path":"gamerecord/complaint",
+					"path":"user/gamerecord/complaint",
 					"style": {
 						"navigationBarTitleText": "",
 						"onReachBottomDistance": 50,
@@ -454,7 +473,7 @@
 					}
 				},
 				{
-					"path":"account/userInfo/userInfo",
+					"path":"user/account/userInfo/userInfo",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -463,7 +482,7 @@
 					}
 				},
 				{
-					"path":"account/bindMobile/bindMobile",
+					"path":"user/account/bindMobile/bindMobile",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -472,7 +491,7 @@
 					}
 				},
 				{
-					"path":"poster/poster",
+					"path":"user/poster/poster",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -480,29 +499,9 @@
 							// "bounce": "none"
 						}
 					}
-				}
-			]
-		},
-		{
-			"root":"pages/pay",
-			"pages":[
+				},
 				{
-					"path":"recharge",
-					"style": {
-						"navigationBarTitleText": "",
-						"app-plus": {
-							"titleNView": false
-							// "bounce":"none"
-						}
-					}
-				}
-			]
-		},
-		{
-			"root":"pages/sub",
-			"pages":[
-				{
-					"path":"exchangePwd",
+					"path":"sub/exchangePwd",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -512,7 +511,7 @@
 					}
 				},
 				{
-					"path":"message",
+					"path":"sub/message",
 					"style": {
 						"navigationBarTitleText": "",
 						"app-plus": {
@@ -560,7 +559,7 @@
 			"text": "社区"
 		},
 		{
-			"pagePath": "pages/sub/activity",
+			"pagePath": "pages_game/sub/activity",
 			"iconPath": "/static/tabbar/activity.png",
 			"selectedIconPath": "/static/tabbar/activity_selected.png",
 			"text": "福利"
@@ -572,17 +571,11 @@
 			"text": "卡牌"
 		}, */
 		// {
-		// 	"pagePath": "pages/sub/yzgame",
+		// 	"pagePath": "pages_game/sub/yzgame",
 		// 	"iconPath": "/static/tabbar/game.png",
 		// 	"selectedIconPath": "/static/tabbar/game_selected.png",
 		// 	"text": "牧场"
 		// }, 
-		{
-			"pagePath": "pages/pointsmarket/market",
-			"iconPath": "/static/tabbar/tab-shop.png",
-			"selectedIconPath": "/static/tabbar/tab-shop-selected.png",
-			"text": "商城"
-        }, 
 		{
 			"pagePath": "pages/main/profile/profile",
 			"iconPath": "/static/tabbar/tab-my.png",

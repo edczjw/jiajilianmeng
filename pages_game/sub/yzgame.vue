@@ -46,7 +46,7 @@
 			</view>
 			<!--创造不易，鼓励鼓励！-->
 			<view style="text-align: center;">
-				<image src="../../static/guli.png" style="width: 400rpx;" mode="widthFix"></image> 
+				<image src="https://oss.fszhuazhuale.com/oss/guli.png" style="width: 400rpx;" mode="widthFix"></image> 
 			</view>
 		</view>
 		<view class="dresscode-box" v-show="isShowDresscode">
@@ -355,7 +355,7 @@
 				windowWidth:0,
 				scenesIndex:0,
 				sheepIndex:0,
-				assetPath:'../../static/game_cc',
+				assetPath:'https://oss.fszhuazhuale.com/oss/game_cc',
 				sumScore:0,
 				sheepLeftMin:-10,
 				sheepLeftMax:200,
@@ -465,7 +465,7 @@
 			this.bgAudio=uni.createInnerAudioContext();
 			this.bgAudio.autoplay = true;
 			this.bgAudio.loop=true; 
-			this.bgAudio.src = this.assetPath+ '/mp3/bg.mp3';
+			this.bgAudio.src = 'https://oss.fszhuazhuale.com/oss/voice/bg.mp3';
 			this.bgAudio.play();
 		},
 		onUnload() {
@@ -513,7 +513,7 @@
 			playDownTimeAudio(){
 				var innerAudioContext = uni.createInnerAudioContext();
 				innerAudioContext.autoplay = true;
-				innerAudioContext.src = this.assetPath+ '/mp3/time3.mp3';
+				innerAudioContext.src = 'https://oss.fszhuazhuale.com/oss/voice/time3.mp3';
 				innerAudioContext.onEnded(function(){
 					innerAudioContext.destroy();
 					innerAudioContext=null;
@@ -523,7 +523,7 @@
 			playScoreAudio(){
 				var innerAudioContext = uni.createInnerAudioContext();
 				innerAudioContext.autoplay = true;
-				innerAudioContext.src = this.assetPath+ '/mp3/df.mp3';
+				innerAudioContext.src = 'https://oss.fszhuazhuale.com/oss/voice/df.mp3';
 				innerAudioContext.onEnded(function(){
 					innerAudioContext.destroy();
 					innerAudioContext=null;

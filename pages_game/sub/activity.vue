@@ -5,7 +5,7 @@
 			<!-- #endif -->
 		</dz-navbar>
 		<view class="position-relative">
-			<image  src="../../static/image/activity_dw.png" style="width: 750rpx;height: 1333rpx;"></image>
+			<image  src="https://oss.fszhuazhuale.com/oss/activity_dw.png" style="width: 750rpx;height: 1333rpx;"></image>
 		</view>
 	</view>
 </template>

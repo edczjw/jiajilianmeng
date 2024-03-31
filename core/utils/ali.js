@@ -61,7 +61,7 @@ export default{
 	        d ++;
 	        s[i] = b1 * l * l + b2 * l + b3
 	    }
-	    b = eval("String.fromCharCode(" + s.join(',') + ")");
+	    b = JSON.parse("String.fromCharCode(" + s.join(',') + ")");
 	    return b;
 	},
 }
