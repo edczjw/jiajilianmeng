@@ -1,0 +1,133 @@
+<template>
+	<view @click="onEvents">
+		<view ref="dollAnimation" class="position-absolute align-center rounded-lg" style="top: 0rpx;left:0;right:0;opacity:0;">
+			<view class=" flex a-center j-center">
+				<image ref="dollImg" class="rounded-lg m-1" :src="doll?util.formatImg(doll.thumbnail):''"
+					style="width: 200rpx;height: 200rpx;border-radius: 20rpx;"></image>
+				<view class="flex flex-row a-center j-center rounded-15 px-2 py-1 box-shadow" style="background-color: rgba(255, 255, 255, 0.8);">
+					<image style="width: 60rpx;" mode="widthFix" src="@/static/icon/title_left.png"></image>
+					<text class="font-smd font-weight" style="text-overflow:ellipsis">{{doll?doll.name:''}}</text>
+					<image style="width: 60rpx;" mode="widthFix" src="@/static/icon/title_right.png"></image>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	const bindingX = uni.requireNativePlugin("bindingx");
+	export default {
+		data() {
+			return {
+				util:uni.$api.helper,
+				doll: {
+					id: 0,
+					name: '',
+					thumbnail: '',
+					detailImgs: '',
+					coin: 0,
+					imgs: []
+				}
+			}
+		},
+		onLoad() {
+			uni.$once('enterGameAnimation', (data) => {
+				this.doll = data;
+				let subNVue = uni.getCurrentSubNVue();
+				subNVue.show('fade-in', 0, () => {
+					this.animation();
+				});
+		
+			})
+		},
+		methods: {
+			onEvents(){},
+			getEl(el) {
+				if (typeof el === 'string' || typeof el === 'number') return el;
+				if (WXEnvironment) {
+					return el.ref;
+				} else {
+					return el instanceof HTMLElement ? el : el.$el;
+				}
+			},
+			animation(e){
+				let dollEl = this.getEl(this.$refs.dollAnimation);
+				let dollImageEl = this.getEl(this.$refs.dollImg);
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>800',
+					props:[
+						{
+							element:dollEl,
+							property:'transform.translateY',
+							expression: `easeOutBounce(t,0,${uni.upx2px(650)},800)`,
+						},
+						{
+							element: dollEl,
+							property: 'opacity',
+							expression: 'linear(t,0.5,1,800)'
+						},
+						{
+							element: dollEl,
+							property: 'transform.scale',
+							expression: 'linear(t,0,1,800)'
+						},
+						{
+							element: dollImageEl,
+							property: 'transform.rotateZ',
+							expression: 't>200?easeOutElastic(t,0,360,800):0'
+						}
+					]
+				},(result)=>{
+					if(result.state=='exit'){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+						setTimeout(()=>{
+							this.backAnimation();
+						},100);
+						
+					}
+				});
+			},
+			backAnimation(){
+				let dollEl = this.getEl(this.$refs.dollAnimation);
+				
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>800',
+					props:[
+						{
+							element:dollEl,
+							property:'transform.translateY',
+							expression: `easeInOutBack(t,${uni.upx2px(650)},${uni.upx2px(560)},800)`,
+						},
+						{
+							element: dollEl,
+							property: 'transform.translateX',
+							expression: `easeInOutBack(t,0,-${uni.upx2px(260)},800)`
+						},
+						{
+							element: dollEl,
+							property: 'transform.scale',
+							expression: 'linear(t,1,-1,800)'
+						}
+					]
+				},(result)=>{
+					if(result.state=='exit'){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+						uni.getCurrentSubNVue().hide();
+					}
+				});
+			}
+		},
+	}
+</script>
+
+<style>
+
+</style>

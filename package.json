@@ -1,0 +1,13 @@
+{
+    "id": "wangqf-tabsSwiper",
+    "name": "tabsSwiper 横向滑动选项卡",
+    "version": "1.0.3",
+    "description": "基于swiper封装，切换tabs，swiper滑动，swiper实现高度自适应，支持手势滑动",
+    "keywords": [
+        "tab",
+        "swiper",
+        "滑动",
+        "轮播",
+        "高度自适应"
+    ]
+}

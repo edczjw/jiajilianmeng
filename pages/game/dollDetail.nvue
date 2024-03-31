@@ -1,0 +1,476 @@
+<template>
+	<view class="flex-1 j-end" ref="mask" :style="style" @tap.stop="close($event)">
+		<view class="flex position-absolute popup bg-white col-12" ref="pop" :style="{height:popHeight,top:popTop}" @tap.stop="click($event)">
+			<u-gap :height="20"></u-gap>
+			<view class="tabs">
+				<scroll-view ref="tabbar1" id="tab-bar" class="tab-bar" style="height: 76rpx;" :scroll="false"
+					:scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+					<view class="flex-column">
+						<view class="flex flex-row">
+							<view class="uni-tab-item flex j-center a-center" v-for="(tab,index) in tabList"
+								:key="tab.id" :id="'tab' +tab.id" :ref="'tabitem'+index" :data-id="index"
+								:data-current="index" @click="ontabtap">
+								<text class="uni-tab-item-title"
+									:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+							</view>
+						</view>
+						<view class="scroll-view-indicator">
+							<view ref="" class="flex scroll-view-underline a-center j-center"
+								:class="isTap ? 'scroll-view-animation':''"
+								:style="{left: indicatorLineLeft + 'px', width: indicatorLineWidth + 'px'}">
+								<image style="width: 50rpx;height: 16rpx;" :src="api.assetsConfig.tabindicator"
+									mode="widthFix">
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+				<view class="position-absolute" style="right: 30rpx;" @tap.stop="close($event)">
+					<u-icon name="close" :size="36" :bold="true"></u-icon>
+				</view>
+				<!-- <view class="tab-bar-line"></view> -->
+				<swiper class="tab-view" :style="{height:popHeight}" id="tab-bar-view" :current="tabIndex" :duration="300" @change="onswiperchange"
+					@transition="onswiperscroll" @animationfinish="animationfinish" @onAnimationEnd="animationfinish">
+					<swiper-item>
+						<list :show-scrollbar="false">
+							<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"
+								display="hide">
+							
+							</refresh>
+							<cell>
+								<view class="flex-row p-3 j-center a-center">
+									<image style="width: 150rpx;height: 150rpx;border-radius: 30rpx;" :src="api.helper.formatImg(doll.thumbnail)"></image>
+									<view class="flex-column">
+										<view class="flex-row j-start mx-5 my-1">
+											<text class="col-3 text-gray font26">娃娃名称</text>
+											<text class="font26">{{doll.name}}</text>
+										</view>
+										<view class="flex-row j-start mx-5 my-1">
+											<text class="col-3 text-gray font26">所需金币</text>
+											<text class="font26">{{doll.coin}}金币/次</text>
+										</view>
+										<view class="flex-row j-start mx-5 my-1">
+											<text class="col-3 text-gray font26">可兑积分</text>
+											<text class="font26">{{doll.exchangeJifen}}积分</text>
+										</view>
+									</view>
+								</view>
+								
+								<image class="mt-2" style="width:750rpx" :src="api.helper.formatImg(item)" mode="widthFix" v-for="(item,index) in doll.imgs"
+									:key="index"></image>
+							</cell>
+						</list>
+						<u-gap :height="120"></u-gap>
+					</swiper-item>
+					<swiper-item>
+						<list :show-scrollbar="false">
+							<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"
+								display="hide">
+							</refresh>
+							<cell v-for="(item, index) in catchRecords" :key="index">
+								<view class="flex-row mx-4 p-2 j-sb a-center">
+									<view class="flex-row j-start a-center">
+										<image class="col-2 rounded-circle" style="width: 80rpx;height: 80rpx;" :src="api.helper.formatImg(item.userIcon)"></image>
+										<view class="flex-column ml-2">
+											<text class="font26">{{item.userNick}}</text>
+											<text class="text-gray font26">{{item.dollName}}</text>
+										</view>
+									</view>
+									<view>
+										<text class="font25 text-gray">{{api.helper.timeFrom(item.createTime,'yyyy-mm-dd hh:MM:ss')}}</text>
+									</view>
+								</view>
+								
+							</cell>
+						</list>
+						<u-gap :height="120"></u-gap>
+					</swiper-item>
+				</swiper>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	//#ifdef APP-PLUS
+	const bindingX = uni.requireNativePlugin("bindingx");
+	const dom = weex.requireModule('dom');
+	//#endif
+	const TAB_PRELOAD_OFFSET = 1;
+	export default {
+		data() {
+			return {
+				touchStartX: 0,  // 触屏起始点x
+				touchStartY: 0,  // 触屏起始点y 
+				api: uni.$api,
+				doll: {
+					id: 0,
+					name: '',
+					thumbnail: '',
+					detailImgs: '',
+					coin: 0,
+					imgs: []
+				},
+				screenHeight:uni.$api.systemInfo.screenHeight,
+				popHeight:uni.$api.systemInfo.screenHeight*0.75,
+				style:{backgroundColor:'rgba(0, 0, 0, 0.5)'},
+				isAnimation:false,
+				scrollInto:'',
+				indicatorLineLeft: 0,
+				indicatorLineWidth: 0,
+				isTap: false,
+				tabList:[{id:1,name:'娃娃详情'},{id:2,name:'抓中记录'}],
+				tabIndex: 0,
+				tabbarWidth:0,
+				catchRecords:[]
+			}
+		},
+		async onLoad(e) {
+			let pages = getCurrentPages();
+			let page = pages[pages.length - 1];
+			let currentWebview = page.$getAppWebview()
+			currentWebview.setStyle({ popGesture: 'none' });
+			if(this.isAnimation == true){
+				return;
+			}
+			let doll = uni.$api.store.state.lastLookDoll;
+			if(!doll.imgs && doll.detailImgs){
+				doll.imgs = doll.detailImgs.split(",");
+			}
+			this.doll = doll;
+			
+			await this.getCatchSuccessRecent();
+			//#ifdef APP-PLUS
+			this.$nextTick(()=>{
+				this.moveIn();
+			})
+			//#endif
+			this.$nextTick(()=>{
+				this._lastTabIndex = 0;
+				this.tabListSize = {};
+				this.selectorQuery();
+			})
+		},
+		computed: {
+			popTop(){
+				//#ifdef APP-PLUS
+				return this.screenHeight;
+				//#endif
+				//#ifdef H5
+				return this.screenHeight - this.popHeight
+				//#endif
+			},
+			tabMarginLeft(){
+				return (750 - uni.$api.helper.px2rpx(this.tabbarWidth))/2;
+			}
+		},
+		methods: {
+			onpullingdown(e){
+				let dis = e.pullingDistance;
+				if(dis > 50){
+					this.close();
+				}
+			},
+			onrefresh(){
+				// console.log("onrefresh")
+			},
+			close(e) {
+				// #ifdef H5
+					uni.navigateBack();
+				// #endif
+				
+				//#ifdef APP-PLUS
+					if(this.isAnimation == true){
+						return
+					}
+					this.moveOut();
+				//#endif
+			},
+			click(e){
+				e.stopPropagation();
+			},
+			async getCatchSuccessRecent(){
+				
+				let param = uni.$api.store.state.lastEnterMachine;
+				let machineId = param? param.machineId:0;
+				uni.$api.http.get(uni.$api.apiConfig.catchSuccessRecent + "?machineId=" + machineId).then(res => {
+					this.catchRecords = res.data.catchRecords || [];
+				}).catch(err => {
+				});
+			},
+			ontabtap(e) {
+				let index = e.target.dataset.current || e.currentTarget.dataset.current;
+				//let offsetIndex = this._touchTabIndex = Math.abs(index - this._lastTabIndex) > 1;
+			
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				this.isTap = true;
+				var currentSize = this.tabListSize[index];
+				this.updateIndicator(currentSize.left, currentSize.width);
+				this._touchTabIndex = index;
+				// #endif
+			
+				this.switchTab(index);
+			},
+			onswiperchange(e) {
+				// 注意：百度小程序会触发2次
+			
+				// #ifndef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				let index = e.target.current || e.detail.current;
+				this.switchTab(index);
+				// #endif
+			},
+			onswiperscroll(e) {
+				if (this.isTap) {
+					return;
+				}
+			
+			
+				var offsetX = e.detail.dx;
+				var preloadIndex = this._lastTabIndex;
+				if (offsetX > TAB_PRELOAD_OFFSET) {
+					preloadIndex++;
+				} else if (offsetX < -TAB_PRELOAD_OFFSET) {
+					preloadIndex--;
+				}
+				if (preloadIndex === this._lastTabIndex || preloadIndex < 0 || preloadIndex > this.tabList.length-1) {
+					return;
+				}
+				/* if (this.pageList[preloadIndex].categoryDataList.length === 0) {
+					this.loadTabData(preloadIndex);
+				} */
+			
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				var percentage = Math.abs(this.swiperWidth / offsetX);
+				var currentSize = this.tabListSize[this._lastTabIndex];
+				var preloadSize = this.tabListSize[preloadIndex];
+				var lineL = currentSize.left + (preloadSize.left - currentSize.left) / percentage;
+				var lineW = currentSize.width + (preloadSize.width - currentSize.width) / percentage;
+				this.updateIndicator(lineL, lineW);
+				// #endif
+			},
+			animationfinish(e) {
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				let index = e.detail.current;
+				if (this._touchTabIndex === index) {
+					this.isTap = false;
+				}
+				this._lastTabIndex = index;
+				this.switchTab(index);
+				this.updateIndicator(this.tabListSize[index].left, this.tabListSize[index].width);
+				// #endif
+			},
+			selectorQuery() {
+				
+				// #ifdef APP-NVUE
+				
+				// 查询 tabbar 宽度
+				uni.createSelectorQuery().in(this).select('#tab-bar').boundingClientRect().exec(rect => {
+					this.tabbarWidth = rect[0].width;
+				});
+				// 查询 tabview 宽度
+				uni.createSelectorQuery().in(this).select('#tab-bar-view').boundingClientRect().exec(rect => {
+					this.swiperWidth = rect[0].width;
+				});
+			
+				// 因 nvue 暂不支持 class 查询
+				var queryTabSize = uni.createSelectorQuery().in(this);
+				for (var i = 0; i < this.tabList.length; i++) {
+					let aa = queryTabSize.select('#tab' + this.tabList[i].id).boundingClientRect();
+				}
+				queryTabSize.exec(rects => {
+					rects.forEach((rect) => {
+						this.tabListSize[rect.dataset.id] = rect;
+					})
+					this.updateIndicator(this.tabListSize[this.tabIndex].left, this.tabListSize[this.tabIndex]
+						.width);
+					this.switchTab(this.tabIndex);
+				});
+				// #endif
+			},
+			updateIndicator(left, width) {
+				this.indicatorLineLeft = left;
+				this.indicatorLineWidth = width;
+			},
+			switchTab(index) {
+				/* if (this.pageList[index].categoryDataList.length === 0) {
+					this.loadTabData(index);
+				}
+			
+				this.pageList[index].setScrollRef(this._headHeight); */
+			
+				if (this.tabIndex === index) {
+					return;
+				}
+			
+			
+				this.tabIndex = index;
+			
+				// #ifdef APP-NVUE
+				this.scrollTabTo(index);
+				// #endif
+				// #ifndef APP-NVUE
+				this.scrollInto = this.tabList[index].id;
+				// #endif
+			
+			},
+			scrollTabTo(index) {
+				const el = this.$refs['tabitem' + index][0];
+				let offset = 0;
+				// TODO fix ios offset
+				if (index > 0) {
+					offset = this.tabbarWidth / 2 - this.tabListSize[index].width / 2;
+					if (this.tabListSize[index].right < this.tabbarWidth / 2) {
+						offset = this.tabListSize[0].width;
+					}
+				}
+				dom.scrollToElement(el, {
+					offset: -offset
+				});
+			},
+			moveIn(){
+				let pop = uni.$api.helper.getEl(this.$refs.pop);
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>500',
+					props:[
+						{
+							element:pop,
+							property:'transform.translateY',
+							expression: `easeOutExpo(t,0,-${this.popHeight},500)`,
+						}
+					]
+				},(result)=>{
+					this.isAnimation = true;
+					if(result.state=='exit'){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+						this.isAnimation = false;
+					}
+				});
+			},
+			moveOut(){
+				this.style ={backgroundColor:'rgba(0, 0, 0, 0)'}
+				let pop = uni.$api.helper.getEl(this.$refs.pop);
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>800',
+					props:[
+						{
+							element:pop,
+							property:'transform.translateY',
+							expression: `easeOutBounce(t,-${this.popHeight},${this.popHeight},800)`,
+						}
+					]
+				},(result)=>{
+					this.isAnimation = true;
+					if(result.state=='exit' && result.t < 900){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+						uni.navigateBack();
+						this.isAnimation = false;
+					}
+				});
+			},
+		},
+	}
+</script>
+
+<style>
+	.popup{
+		border-top-left-radius: 40rpx;
+		border-top-right-radius: 40rpx;
+	}
+	
+	.tabs {
+		flex-direction: column;
+		overflow: hidden;
+		background-color: rgba(0, 0, 0, 0);
+		margin-top: 10rpx;
+		/* border-top-left-radius: 30rpx;
+	border-top-right-radius: 30rpx;
+	box-shadow: 0rpx 0rpx 2rpx rgba(0, 0, 0, 0.2); */
+		/* #ifdef MP-ALIPAY || MP-BAIDU */
+		height: 100vh;
+		/* #endif */
+	}
+	
+	.tab-bar {
+		width: 750upx;
+		height: 84upx;
+		flex-direction: row;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+	}
+	
+	/* #ifndef APP-NVUE */
+	.tab-bar ::-webkit-scrollbar {
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+	}
+	
+	/* #endif */
+	
+	.scroll-view-indicator {
+		position: relative;
+		height: 16rpx;
+		background-color: transparent;
+	}
+	
+	.scroll-view-underline {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 0;
+		height: 16rpx;
+		background-color: #fff;
+	}
+	
+	.scroll-view-animation {
+		transition-duration: 0.2s;
+		transition-property: left;
+	}
+	
+	.tab-bar-line {
+		height: 1upx;
+		background-color: #cccccc;
+	}
+	
+	.tab-view {
+		flex: 1;
+	}
+	
+	.uni-tab-item {
+		/* #ifndef APP-PLUS */
+		display: inline-block;
+		/* #endif */
+		display: flex;
+		flex-wrap: nowrap;
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+	
+	.uni-tab-item-title {
+		color: #909399;
+		font-size: 32upx;
+		height: 50upx;
+		line-height: 50upx;
+		flex-wrap: nowrap;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+	}
+	
+	.uni-tab-item-title-active {
+		color: #000;
+		font-size: 33upx;
+		font-weight: bold;
+	}
+	
+</style>

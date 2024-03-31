@@ -1,0 +1,599 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^dz-(.*)": "@/core/components/dz-$1/dz-$1.vue",
+			"^wwj-(.*)": "@/components/wwj-$1/wwj-$1.vue"
+		}
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/main/index/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					// "bounce": "none",
+					"titleNView": false
+					/* "pullToRefresh": {
+						"support": true,
+						"color": "#E80F2E"
+					} */
+				}
+			}
+		},
+		{
+			"path": "pages/main/profile/profile",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/rank/ranklist",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/pointsmarket/market",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/pointsmarket/detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/main/discover/discover",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/sub/activity",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/sub/h5game",
+			"style": {
+				"navigationBarTitleText": "欢乐抓",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					// "titleNView": false
+					"bounce":false
+				}
+			}
+		},
+		{
+			"path": "pages/order/order",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false
+					// "bounce": "none"
+				}
+			}
+		},
+		{
+			"path":"pages/order/orderDetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path":"pages/order/shipping",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/distribution/distribution",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path":"pages/distribution/withdraw",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/distribution/myDistribution",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/distribution/brokerageCapital",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/distribution/withdrawRecord",
+			"style": {
+				"navigationBarTitleText": "",
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/public/webview/webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "default"
+			}
+		},
+		{
+			"path": "pages/public/article",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "default"
+			}
+		},
+		{
+			"path": "pages/popup/popup",
+			"style": {
+				"backgroundColor": "transparent",
+				"app-plus": {
+					"titleNView": false,
+					"background": "transparent",
+					"animationType":"none"
+				}
+			}
+		},
+	   //  {
+    //         "path" : "pages/main/index2/index2",
+    //         "style" : {
+    //             "navigationBarTitleText": "",
+				// "app-plus":{
+				// 	"scrollIndicator":"none",
+				// 	"titleNView":{
+				// 		"searchInput":{
+				// 			"align":"left",
+				// 			"backgroundColor":"#F7F7F7",
+				// 			"borderRadius":"20px",
+				// 			"disabled":true,
+				// 			"placeholder":"搜索关键字找娃娃",
+				// 			"placeholderColor":"#CCCCCC"
+				// 		}
+				// 	}
+				// }
+    //         }
+    //     },
+		{
+			"path": "pages/game/game",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 50,
+				"app-plus": {
+					"titleNView": false,
+					"subNVues":[{
+						"id":"enterGameAnimation",
+						"path":"pages/subnvues/enterGameAnimation",
+						"type":"popup",
+						"style":{
+							"popGesture":"none",
+							"margin":"auto",
+							"width":"100%",
+							"height":"100%",
+							"background":"transparent",
+							"mask": "rgba(0,0,0,0)"
+						}
+					}]
+				}
+			}
+		},{
+            "path" : "pages/game/machine",
+            "style": {
+            	"navigationBarTitleText": "",
+            	"app-plus": {
+            		"titleNView": false
+            		// "bounce":"none"
+            	}
+            }
+            
+        },
+		{
+			"path": "pages/game/dollDetail",
+			"style": {
+				"backgroundColor": "transparent",
+				"app-plus": {
+					"popGesture":"none",
+					"titleNView": false,
+					"background": "transparent",
+					"animationType":"none"
+				}
+			}
+		},
+		{
+			"path": "pages/public/search/search",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none",
+					"animationType": "slide-in-bottom",
+					"animationDuration": 100,
+					"softinputMode":"adjustResize"
+				}
+			}
+		},
+		{
+			"path":"pages/audit/recharge",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": false
+					// "bounce":"none"
+				}
+			}
+		},
+		{
+			"path":"pages/audit/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"bounce":"none",
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/sub/yzgame",
+			"style": {
+				"navigationBarTitleText": "牧场",
+				"app-plus":{
+					"titleNView":false
+				}
+				
+			}
+		}
+    ],
+	"subPackages":[
+		{
+			"root":"pages/user",
+			"pages":[
+				{
+					"path":"login/login",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"bounce":"none",
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"login/phoneLogin",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"bounce":"none",
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"login/captcha",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"bounce":"none",
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"set/set",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"collect/collect",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"doll/dollBag",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false,
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path":"doll/detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+							// "bounce": "none"
+						}
+					}
+				},
+				{
+					"path":"address/address",
+					"style": {
+						"navigationBarTitleText": "",
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"bounce": "none",
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"address/manage",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"account/integral/detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"titleNView": false
+							// "bounce":false
+						}
+					}
+				},
+				{
+					"path":"account/bill/bill",
+					"style": {
+						"navigationBarTitleText": "",
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"titleNView": false
+							// "bounce":false
+						}
+					}
+				},
+				{
+					"path":"gamerecord/gamerecord",
+					"style": {
+						"navigationBarTitleText": "",
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"titleNView": false,
+							"bounce":false
+						}
+					}
+				},
+				{
+					"path":"gamerecord/complaint",
+					"style": {
+						"navigationBarTitleText": "",
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"titleNView": false,
+							"bounce":false
+						}
+					}
+				},
+				{
+					"path":"account/userInfo/userInfo",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"account/bindMobile/bindMobile",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path":"poster/poster",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+							// "bounce": "none"
+						}
+					}
+				}
+			]
+		},
+		{
+			"root":"pages/pay",
+			"pages":[
+				{
+					"path":"recharge",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false
+							// "bounce":"none"
+						}
+					}
+				}
+			]
+		},
+		{
+			"root":"pages/sub",
+			"pages":[
+				{
+					"path":"exchangePwd",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false,
+							"bounce":"none"
+						}
+					}
+				},
+				{
+					"path":"message",
+					"style": {
+						"navigationBarTitleText": "",
+						"app-plus": {
+							"titleNView": false,
+							"bounce":"none"
+						}
+					}
+				}
+			]
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#f3f4f6",
+		"backgroundColor": "#f3f4f6",
+		"scrollIndicator":"none",
+		"app-plus":{
+			"scrollIndicator":"none"
+		}
+	},
+	"tabBar": {
+		"color": "#bfbfbf",
+		"selectedColor": "#fa3434",
+		"borderStyle": "white",
+		"blurEffect": "dark",
+		"fontSize": "14px",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/main/index/index",
+			"iconPath": "/static/tabbar/tab-home.png",
+			"selectedIconPath": "/static/tabbar/tab-home-selected.png",
+			"text": "首页"
+        },
+		/* {
+			"pagePath": "pages/rank/ranklist",
+			"iconPath": "/static/tabbar/tab-rank.png",
+			"selectedIconPath": "/static/tabbar/tab-rank-selected.png",
+			"text": "大神榜"
+        }, */
+		/* {
+			"pagePath": "pages/main/discover/discover",
+			"iconPath": "/static/tabbar/shequ.png",
+			"selectedIconPath": "/static/tabbar/shequ_selected.png",
+			"text": "社区"
+		},
+		{
+			"pagePath": "pages/sub/activity",
+			"iconPath": "/static/tabbar/activity.png",
+			"selectedIconPath": "/static/tabbar/activity_selected.png",
+			"text": "福利"
+		}, */
+		/* {
+			"pagePath": "pages/index/index",
+			"iconPath": "/static/tabbar/game.png",
+			"selectedIconPath": "/static/tabbar/game_selected.png",
+			"text": "卡牌"
+		}, */
+		/* {
+			"pagePath": "pages/sub/yzgame",
+			"iconPath": "/static/tabbar/game.png",
+			"selectedIconPath": "/static/tabbar/game_selected.png",
+			"text": "牧场"
+		}, */ 
+		{
+			"pagePath": "pages/pointsmarket/market",
+			"iconPath": "/static/tabbar/tab-shop.png",
+			"selectedIconPath": "/static/tabbar/tab-shop-selected.png",
+			"text": "商城"
+        }, 
+		{
+			"pagePath": "pages/main/profile/profile",
+			"iconPath": "/static/tabbar/tab-my.png",
+			"selectedIconPath": "/static/tabbar/tab-my-selected.png",
+			"text": "个人"
+		}]
+	/* 	"midButton": {
+			"width": "63px",
+			"height": "63px",
+			"iconPath": "/static/tabbar/tab-zhua-selected.png",
+			"iconWidth": "55px"
+		} */
+	}
+}

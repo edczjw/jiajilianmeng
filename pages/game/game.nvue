@@ -1,0 +1,882 @@
+<template>
+	<view class="flex-1" @touchstart="touchStart" @touchend="touchEnd">
+		<view class="head">
+			<u-navbar :autoBack="true">
+				<view class="d-flex a-center flex-nowrap col-6" slot="left">
+					<view class="bg-success d-flex a-center flex-nowrap"
+						style="width: 50rpx;height: 60rpx; border-radius: 15rpx;">
+						<u-icon name="arrow-left" color="#ffffff" size="45" :bold="true"></u-icon>
+					</view>
+					<view class="ml-2">
+						<text class="font-smd font-weight">{{doll?doll.name:''}}</text>
+					</view>
+				</view>
+				<view class="d-flex flex-nowrap a-center" slot="right" @tap="toGameRecordPage">
+					<u--image src="/static/image/complaint.png" width="40" height="40"
+						style="background-color: #848484;padding: 12rpx;border-radius: 20rpx;"></u--image>
+				</view>
+			</u-navbar>
+			<u-gap :height="(customNavHeight + 42) +'px'"></u-gap>
+		</view>
+		<view class="mx-0  d-flex flex-column" :style="{height:(videoHeight+20)+'px'}">
+			<view class="video" :style="{height:videoHeight+'px'}">
+				<!-- <video :src="machine.video?machine.video:''" autoplay="true" :style="{height:videoHeight+'px'}"  controls :advanced="advanced"></video> -->
+
+				<web-view class="" @onPostMessage="videoPostMessage" :webview-styles="{progress: false}" :style="{height:videoHeight+'px'}" ref="webview"
+					name="webview"
+					:src="webViewSrc">
+				</web-view>
+			</view>
+			<view v-if="player" class="current-player a-center j-center ">
+				<view class="d-flex flex-row a-center j-center pl-1">
+					<u-avatar :src="util.formatImg(player.icon)" size="65"></u-avatar>
+					<view class="d-flex flex-column a-start">
+						<u--text :line="1" :text="player.nick" size="25" :bold="true"></u--text>
+						<view class="d-flex flex-row a-center j-center">
+							<u--text text="游戏中" size="20" color="#a1b0b5"></u--text>
+							<image class="" src="../../static/gif/playing.gif"
+								style="width: 40rpx;height: 30rpx;bottom: 5rpx;"></image>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="current-viewers a-center j-center" style="opacity: 0.9;">
+				<view class="d-flex flex-row a-center j-center">
+					<u-avatar-group :urls="viewers?viewers:[]" size="55" gap="0.4" keyName="icon" :extraValue="viewers?viewers.length:0"></u-avatar-group>
+				</view>
+			</view>
+			
+			<!-- <view class="baojia a-center j-center" style="opacity: 0.9;" @click="() => showBaojiaPop = true">
+				<u--text prefixIcon="integral-fill" :iconStyle="{color:'#ffffff'}" color="#ffffff" size="22" text="保夹值 11/500"></u--text>
+			</view> -->
+
+
+			<!-- <view class="toolbars a-center j-center" style="opacity: 0.9;left:10rpx;top:450rpx">
+				<image class="tool-bar-item mt-1" @tap="routerTo('index')" src="../../static/image/home.png"></image>
+				<image class="tool-bar-item mt-3 mb-1" @tap="routerTo('dollBag')" src="../../static/image/mydoll.png"></image>
+				<image class="tool-bar-item mt-3 mb-1" @tap="customerService" src="../../static/image/customer.png"></image>
+			</view> -->
+
+			<view class="toolbars a-center j-center" style="opacity: 0.9;">
+				<image v-if="openCall" class="tool-bar-item mt-1" @tap="() => showZhaoHuanPop = true" src="../../static/image/zhaohuan.png"></image>
+				<image class="tool-bar-item" :class="openCall ? 'mt-3' : 'mt-1'" @tap="changeVolume" :src="this.gameSet.volume ? '../../static/image/volume-up.png' : '../../static/image/volume-off.png'"></image>
+				<image class="tool-bar-item mt-3 mb-1" @tap="collectMachine" :src="collect ? '../../static/image/collected.png' : '../../static/image/collect.png'"></image>
+				<image class="tool-bar-item mt-3 mb-1" @tap="showRemark" src="../../static/image/remark.png"></image>
+				<!-- <image class="tool-bar-item" style="margin-top: 50rpx;margin-bottom: 25rpx;"
+					@tap="loadMachineData(-1 * machineId)" src="../../static/image/exchange.png"></image> -->
+			</view>
+			<view ref="readyGo" class="position-absolute col-12 a-center j-center" style="top: 400rpx;transform: scale(0);">
+				<image  style="width: 600rpx;height: 300rpx;" src="../../static/game/readygo.png" mode="widthFix"></image>
+			</view>
+			
+			<!-- <view class="a-center j-center position-absolute" style="opacity: 0.9;border-radius: 20rpx;background-color: rgba(38, 38, 38, 0.4);padding:8rpx;bottom: 50rpx;left:10rpx;">
+				<u--text prefixIcon="bell-fill" :iconStyle="{color:'#ffffff'}" color="#ffffff" size="24" text="健康娱乐,未成年人请合理控制时间,切勿沉迷哦~"></u--text>
+			</view> -->
+		</view>
+		
+		<u-gap height="40rpx"></u-gap>
+		
+		<view class="operate d-flex flex-row flex-wrap col-12" style="height: 230rpx;">
+			<view class="col-3 a-start j-center" style="">
+				<!-- //娃娃详情 -->
+				<view elevation="10rpx" class="box-shadow d-flex flex-row flex-wrap a-center j-center ml-2"
+					@click="openDollDetail" hover-class="btn-hover"
+					style="width:148rpx;height: 148rpx;background-color: #fff;border-radius: 40rpx;padding: 5rpx;">
+					<image :src="doll?util.formatImg(doll.thumbnail):''"
+						style="width: 95rpx;height: 95rpx;border-radius: 20rpx;"></image>
+					<view class="j-center a-center">
+						<u--text :block="true" color="#8f9ca2" :size="26" style="margin-top: 0rpx;" text="详"></u--text>
+						<u--text :block="true" color="#8f9ca2" :size="26" style="margin-bottom: 0rpx;" text="情">
+						</u--text>
+					</view>
+				</view>
+			</view>
+			<view class="col-6 a-center j-center" style="">
+				<view class="col-6">
+					<wwj-game-button :image="gameBtnImage" @click="playGame" width="320" height="160"
+						:text="gameBtnText"></wwj-game-button>
+				</view>
+			</view>
+			<view class="col-3 j-center a-end" style="align-items: flex-end;">
+				<view elevation="10rpx" class="d-flex flex-column a-center j-center mr-2 box-shadow"
+					@click="openReChargePage"
+					style="background-color: #fff;width: 148rpx;height: 148rpx;border-radius: 40rpx;padding:10rpx;">
+					<image :src="'/static/image/cz.png'" style="width: 80rpx;height: 80rpx;"></image>
+					<view class="j-center a-center flex-row flex-wrap mt-0">
+						<u--text :block="true" :bold="true" :size="26" align="center"
+							:text="userInfo?userInfo.coin||0:0"></u--text>
+						<u-icon :name="assetsConfig.rechargeAddIcon" size="28" :bold="true"></u-icon>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="d-flex flex-row flex-wrap a-end col-12">
+			<view class="col-6">
+				<text
+					style="color: #b3d0dc;font-size: 30rpx;font-weight: bold;margin-left: 30rpx;">NO:{{machineName}}</text>
+			</view>
+			<!-- <view class="col-4" style="align-items: flex-center;">
+				<text
+					style="color: #b3d0dc;font-size: 30rpx;font-weight: bold;margin-left: 30rpx;">库存充足</text>
+			</view> -->
+			<view class="col-6" style="align-items: flex-end;">
+				<text
+					style="color: #b3d0dc;font-size: 30rpx;font-weight: bold;margin-right: 30rpx;">可兑{{doll ? doll.exchangeJifen : 0}}积分</text>
+			</view>
+		</view>
+		
+		<view class="">
+			<wwj-game-popup :show="showGamePrompt" :doll="doll?doll:null" :stopTime="gamePopStopTime"
+				:type="showGamePopType" @stopGame="stopGame" @startGame="startGame"></wwj-game-popup>
+		</view>
+		
+		<u-modal
+			content="娃娃处于死角时可以呼叫摆娃娃,小哥将会在本局游戏结束后(下爪)将娃娃恢复到机器原始位置,滥用摆娃娃可能会被禁用该功能"
+			title="小哥哥快来摆娃娃"
+			:show="showZhaoHuanPop"
+			:zoom="false"
+			:showCancelButton="true"
+			@confirm="callPutDoll"
+			@cancel="() => showZhaoHuanPop = false"
+		></u-modal>
+		
+		<u-modal
+			title="保夹值说明"
+			content="(1).保夹值是玩家在此玩家连续游戏的累计值,点击开始游戏,保夹值开始累计;保夹值满且未抓中,将免费赠送一个娃娃(2).上个玩家结束60秒内,任何玩家可投币继承上一个玩家的保夹值(3).每次用户抓中或者是房间空闲超过60秒,保夹值清零(4).保夹值仅限于当前房间"
+			:show="showBaojiaPop"
+			@confirm="() => showBaojiaPop = false"
+		>
+		</u-modal>
+		
+		<u-modal
+			title="游戏说明"
+			:show="remarkModelShow"
+			:closeOnClickOverlay="true"
+			@close="() => remarkModelShow = false"
+			@confirm="() => remarkModelShow = false"
+		>
+			<view style="">
+				<scroll-view
+					:scroll-into-view="toView" 
+					scroll-y="true" 
+					style="height: 600rpx;width: 550rpx;" 
+					scroll-with-animation="true" 
+					:show-scrollbar="false"
+				>
+					<text class="font26">{{userNotice}}</text>
+				</scroll-view>
+			</view>
+		</u-modal>
+		
+		<!-- #ifdef H5 -->
+		<u-popup id="gameControlPanel" :bgColor="'#f3f4f6'" duration="300" :show="showRoker" round="80" mode="bottom"
+			@close="close" :overlay="false">
+			<wwj-game-controlpanel ref="wwjGameControPanel" :player="player" :status="status" :gameStopTime="gameStopTime" :operToken="operToken" :operUrl="operUrl" :panelHeight="panelHeight"
+				@clickDirectionBtn="btnVoice" @clickEnterBtn="xiazhua"></wwj-game-controlpanel>
+		</u-popup>
+		<!-- #endif -->
+		<!-- #ifdef APP-PLUS -->
+		<view ref="gameControlPanel" class="flex col-12 position-absolute bg-white" style="z-index: 10079;;border-top-left-radius: 40rpx;border-top-right-radius: 40rpx;" :style="{top:screenHeight}">
+			<wwj-game-controlpanel ref="wwjGameControPanel" :player="player" :status="status" :gameStopTime="gameStopTime" :operToken="operToken" :operUrl="operUrl" :panelHeight="panelHeight"
+				@clickDirectionBtn="btnVoice" @clickEnterBtn="xiazhua"></wwj-game-controlpanel>
+		</view>
+		<!-- #endif-->
+	</view>
+</template>
+
+<script>
+	import $mHelper from '@/core/utils/helper';
+	import scrollMessage from '@/core/utils/scroll-message'
+	const bindingX = uni.requireNativePlugin("bindingx");
+	import {
+		mapState,
+		mapGetters
+	} from 'vuex';
+	export default {
+		data() {
+			return {
+				touchStartX: 0,  // 触屏起始点x  
+				touchStartY: 0,  // 触屏起始点y 
+				customNavHeight: uni.getSystemInfoSync().statusBarHeight,
+				theme: uni.$api.theme,
+				util: uni.$api.helper,
+				screenHeight:uni.$api.systemInfo.screenHeight,
+				videoHeight: uni.$api.systemInfo.screenHeight * 0.62,
+				panelHeight: uni.$api.systemInfo.screenHeight * 0.25,
+				assetsConfig: uni.$api.assetsConfig,
+				showGamePrompt: false,
+				showGamePopType: 1,
+				showZhaoHuanPop: false,
+				showBaojiaPop: false,
+				remarkModelShow: false,
+				gamePopStopTime: 0,
+				detailActive: 0,
+				dollDetailTabHeight: uni.$api.systemInfo.screenHeight * 0.65,
+				dollDetailTabs: [{
+					name: '商品详情',
+				}, {
+					name: '最近夹中的人',
+				}],
+				showRoker: false,
+				showDollDetail: false,
+				catchRecords: [],
+				machineId: 0,
+				machineName: '',
+				status: '',
+				viewers: [],
+				openCall: false,
+				viewerCount: 0,
+				video: '',
+				collect: false,
+				player: null,
+				isSubscribe: false,
+				subscribers: [],
+				subscribeSort: 0,
+				gameStopTime: 0,
+				operUrl: "",
+				operToken: "",
+				doll: {
+					id: 0,
+					name: '',
+					thumbnail: '',
+					detailImgs: '',
+					coin: 0,
+					imgs: []
+				},
+				webViewSrc: '/hybrid/html/tx.html?video=' + encodeURIComponent(uni.$api.store.state.lastEnterMachine.video),
+				userNotice: '',
+			}
+		},
+		computed: {
+			...mapState(['userInfo', 'offsetTime', 'serverConf','gameSet']),
+			gameBtnImage() {
+				if (this.isSubscribe) {
+					return '/static/game/game-yuyue-cancel.png'
+				}
+				if (!this.player || this.player.userName == this.userInfo.id) {
+					return '/static/game/game-play.png'
+				}
+				return '/static/game/gameing.png'
+			},
+			gameBtnText() {
+
+				if (!this.isSubscribe && (!this.player || this.player.userName == this.userInfo.id)) {
+					let needCoinNum = this.doll ? this.doll.coin : 0;
+					return needCoinNum + '金币/次'
+				} else if (this.player && this.player.userName != this.userInfo.id) {
+					return "";
+				}
+				return this.isSubscribe && this.subscribeSort == 0 ? '下一个到您' : '前面' + this.subscribeSort + '人等待'
+			},
+			enterImageStyle() {
+				return {
+					position: "fixed",
+					top: `${uni.$u.sys().windowHeight / 2 - 150}px`,
+					left: `${(750-200)/2}rpx`,
+					width: "200rpx",
+					height: "350rpx",
+				}
+			},
+			enterTextStyle() {
+				return {
+					position: "fixed",
+					top: `${uni.$u.sys().windowHeight / 2-130}px`,
+					left: `${(750-500)/2}rpx`,
+					width: "500rpx",
+					height: "300rpx",
+				}
+			}
+		},
+		watch: {
+			subscribers: {
+				handler(newSubscribers, oldSubscribers) {
+					let subscribeSort = 0;
+					let isSubscribe = false;
+					if (newSubscribers && newSubscribers.length > 0) {
+						newSubscribers.forEach((item, index) => {
+							if (item.userName == this.userInfo.id) {
+								subscribeSort = index;
+								isSubscribe = true;
+							}
+						})
+					}
+					this.subscribeSort = subscribeSort;
+					this.isSubscribe = isSubscribe;
+				}
+			},
+			status: {
+				handler(newStatus, oldStatus) {
+					if (newStatus != 0 && (this.player && this.player.userName == this.userInfo.id)) {
+						this.showRoker = true;
+					} else {
+						this.showRoker = false;
+					}
+				}
+			},
+			//#ifdef APP-PLUS
+			showRoker:{
+				handler(newV,oldV){
+					if(newV){
+						//moveInControlpanel
+						this.moveInControlpanel()
+					}else{
+						//moveOutControlpanel
+						this.moveOutControlpanel()
+					}
+				}
+			},
+			//#endif
+		},
+		async onLoad(e) {
+			
+		},
+		async onShow() {
+			let param = uni.$api.store.state.lastEnterMachine
+			this.machineId = param.machineId;
+			await this.loadMachineData(this.machineId);
+			this.getUserNotice();
+			this.addListener();
+			uni.$once("socketConnect",()=>{
+				this.loadMachineData(this.machineId);
+				this.addListener();
+			});
+			this.backgroundVoice();
+		},
+		onUnload() {
+			this.clear();
+		},
+		onHide() {
+			this.clear();
+		},
+		mounted() {
+			// this.animation();
+		},
+		methods: {
+			async loadMachineData(machineId) {
+				if(machineId < 0){
+					this.leaveRoom(this.machineId);
+				}
+				
+				await uni.$api.socket.send(uni.$api.socketioConfig.enterRoom, {
+					"id": machineId
+				}, res => {
+					this.video = res.machine.video;
+					this.machineId = res.machine.id;
+					this.status = res.machine.status;
+					this.player = res.machine.player;
+					this.viewers = res.machine.viewers;
+					this.viewerCount = res.machine.viewerCount;
+					this.machineName = res.machine.name;
+					this.openCall = res.machine.openCall;
+					this.subscribers = res.machine.subscribers || [];
+					this.collect = res.machine.isCollect == 1;
+					this.doll = res.machine.doll;
+					if (this.doll && this.doll.detailImgs) {
+						this.doll.imgs = this.doll.detailImgs.split(",");
+					}
+					if (this.status == 1 && this.player && this.player.userName == this.userInfo.id) {
+						this.gameStopTime = res.machine.stopTime;
+						this.showRoker = true;
+					}else{
+						// #ifdef APP-PLUS
+						uni.$emit("enterGameAnimation",this.doll);
+						// #endif
+					}
+
+					this.operToken = res.operToken || "";
+					this.operUrl = res.machine.operUrl || "";
+					
+					this.webViewSrc = '/hybrid/html/nnsv.html?p=ddwwwj&buffertime=' + this.serverConf.videoBuffertime + '&timestmap=199248&r=2.0.8&wc=hy&video=' + encodeURIComponent(this.video?this.video:'');
+					
+					// if (uni.$api.systemInfo.platform == 'android1') {
+					// 	this.webViewSrc = '/hybrid/html/nnsv.html?p=ddwwwj&buffertime=' + this.serverConf.videoBuffertime + '&timestmap=199248&r=2.0.8&wc=hy&video=' + encodeURIComponent(this.video?this.video:'');
+					// } else {
+					// 	this.webViewSrc = '/hybrid/html/tx.html?video=' + encodeURIComponent(this.video?this.video:'');
+					// }
+					
+					// this.webViewSrc = "https://tlgoss.93kj.top/web/hybrid/html/tx.html";
+				});
+			},
+			gameStartListener(res){
+				// console.log("------------------------------PushGameStart-------------------------------");
+				if (this.machineId == res.mid) {
+					this.player = res.player;
+					this.subscribers = res.subscribers;
+					this.status = res.status;
+					if (this.isSubscribe && res.player && res.player.userName == this.userInfo.id && res
+						.status == 0) {
+						//弹出预约玩家开始游戏的倒计时框
+						this.daoninleVoice();
+						this.yuyue2you(res.subscribeEndTime);
+					}
+				}
+			},
+			addListener() {
+				uni.$api.socket.off(uni.$api.socketioConfig.pushGameStatus);
+				uni.$api.socket.off(uni.$api.socketioConfig.pushGameStart);
+				uni.$api.socket.off(uni.$api.socketioConfig.pushGameResult);
+				//游戏状态
+				uni.$api.socket.on(uni.$api.socketioConfig.pushGameStatus, res => {
+					// console.log("------------------------------pushGameStatus-------------------------------");
+					if (this.machineId == res.mid) {
+						this.status = res.status;
+					}
+				})
+				//游戏开始
+				uni.$api.socket.on(uni.$api.socketioConfig.pushGameStart,this.gameStartListener)
+				//游戏结果
+				uni.$api.socket.on(uni.$api.socketioConfig.pushGameResult, res => {
+					// console.log("------------------------------PushGameResult-------------------------------");
+					if (this.machineId == res.mid) {
+						if (this.player && this.player.userName == this.userInfo.id) {
+							if (res.isWin == 1) {
+								this.gameSuccessVoice();
+							} else {
+								this.gameFailVoice();
+							}
+							this.popGameResult(res.isWin, res.subscribeEndTime);
+						}
+						this.status = 0;
+					}
+				})
+			},
+			clear() {
+				uni.$api.socket.off(uni.$api.socketioConfig.pushGameStatus);
+				uni.$api.socket.off(uni.$api.socketioConfig.pushGameStart);
+				uni.$api.socket.off(uni.$api.socketioConfig.pushGameResult);
+				this.backgroundVoiceStop();
+				this.leaveRoom(this.machineId);
+			},
+			videoPostMessage(data) {
+				let action = data.detail.data[0];
+				if (action.action === "onReady") {
+					this.backgroundVoice();
+					this.setPlayVideoInterval();
+				} else if (action.action === "playing") {
+					this.clearPlayVideoInterval();
+				}
+			},
+			playGame() {
+				if (!uni.$api.store.getters.hasLogin) {
+					uni.$api.router.push({
+						route: uni.$api.pagesConfig.login
+					});
+					return;
+				}
+				if (this.isSubscribe) {
+					this.btnVoice();
+					this.cancelSubribe();
+					return;
+				}
+
+				if (this.player && this.player.userName != this.userInfo.id) {
+					return;
+				}
+
+				this.startGame();
+			},
+			cancelSubribe() {
+				uni.$api.socket.send(uni.$api.socketioConfig.cancelSubribe, {
+					"id": this.machineId
+				}, res => {
+					if (res.rtnCode != 0 && res.msg) {
+						uni.showToast({
+							title: res.msg,
+							icon: 'none'
+						});
+					}
+				});
+			},
+			startGame() {
+				uni.$api.socket.send(uni.$api.socketioConfig.playStart, {
+					"id": this.machineId
+				}, res => {
+								
+					this.showGamePrompt = false;
+					if (res.rtnCode == 0) {
+						this.$refs.wwjGameControPanel.lastCmd = 0;
+						
+						if (res.isSubscribe && res.isSubscribe == 1) {
+							this.btnVoice();
+							return;
+						}
+						this.readygoVoice();
+						this.status = 1;
+						this.player = {
+							userName: this.userInfo.id,
+							nick: this.userInfo.nick.length > 6 ? this.userInfo.nick.slice(0, 6) : this
+								.userInfo.nick,
+							icon: this.userInfo.icon
+						}
+						this.userInfo.coin = res.coin;
+						//升起游戏摇杆
+						this.showRoker = true;
+						//倒计时开始
+						this.gameStopTime = res.stopTime;
+						this.operToken = res.operToken;
+						this.operUrl = res.operUrl;
+						this.readyGoAnimation();
+					}else if(res.rtnCode == 100){
+						$mHelper.toast(res.msg);
+						this.openReChargePage();
+					}else if(res.rtnCode == 101 && res.msg){
+						$mHelper.toast(res.msg);
+					}
+					//其他条件判断后续补充
+				});
+			},
+			leaveRoom(machineId){
+				uni.$api.socket.send(uni.$api.socketioConfig.leaveRoom, {
+					"id": this.machineId
+				}, res => {
+				});
+			},
+			xiazhua() {
+				this.status = 2;
+				this.xiazhuaVoice()
+			},
+			yuyue2you(waitStopTime) {
+				this.showGamePrompt = true;
+				this.showGamePopType = 1;
+				this.gamePopStopTime = waitStopTime;
+			},
+			popGameResult(result, nextGameWaitStopTime) {
+				this.showGamePrompt = true;
+				this.showGamePopType = result == 1 ? 3 : 2;
+				this.gamePopStopTime = nextGameWaitStopTime;
+			},
+			collectMachine() {
+				this.btnVoice();
+
+				uni.$api.http.get(uni.$api.apiConfig.collectMachine + "?machineId=" + this.machineId).then(res => {
+					this.collect = res.data;
+					$mHelper.toast(this.collect ? '收藏成功' : '已取消收藏');
+				}).catch(err => {
+					console.log(err)
+				});
+			},
+			close() {
+				this.showRoker = false;
+			},
+			openDollDetail() {
+				// this.showDollDetail = true;
+				uni.$u.throttle(()=>{
+					uni.$api.store.commit('setLastLookDoll',this.doll);//为了兼容nvue与nvue之间传递的数据
+					uni.$api.router.push({
+						route:uni.$api.pagesConfig.dollDetail,
+						query:{}
+					});
+				},800,true);
+				
+				// #ifdef APP-NVUE
+				// uni.$emit("dollDetail");
+				// #endif
+			},
+			getCatchSuccessRecent(){
+				uni.$api.http.get(uni.$api.apiConfig.catchSuccessRecent + "?machineId=" + this.machineId).then(res => {
+					this.catchRecords = res.data.catchRecords || [];
+				}).catch(err => {
+				});
+			},
+			getUserNotice(){
+				uni.$api.http.get(uni.$api.apiConfig.getArticle + "3").then(res => {
+					this.userNotice = res.data.noticeContent;
+				}).catch(err => {
+				});
+			},
+			openReChargePage() {
+				uni.$api.router.push({
+					route:uni.$api.pagesConfig.recharge,
+					query:{}
+				});
+			},
+			toGameRecordPage() {
+				uni.$api.router.push({
+					route:uni.$api.pagesConfig.gamerecord,
+					query:{}
+				});
+			},
+			stopGame() {
+				this.showGamePrompt = false;
+				this.showRoker = false;
+				this.cancelSubribe();
+			},
+			detailClick(item){
+				this.detailActive = item.index;
+				if(this.detailActive == 1){
+					this.getCatchSuccessRecent();
+				}
+				
+				// console.log(item);
+			},
+			showRemark() {
+				this.remarkModelShow = true;
+			},
+			closeDollDetail() {
+				this.showDollDetail = false;
+			},
+			closeOnClickOverlay() {
+				console.log("closeOnClickOverlay")
+			},
+			setPlayVideoInterval() {
+				this.$refs.webview.evalJs("play()");
+				this.clearPlayVideoInterval();
+
+				let i = 0;
+				this.playVideoTimer = setInterval(() => {
+					i++;
+					this.$refs.webview.evalJs("play()");
+					if (i == 20) {
+						this.clearPlayVideoInterval();
+					}
+				}, 400)
+			},
+			clearPlayVideoInterval() {
+				if (this.playVideoTimer) {
+					clearInterval(this.playVideoTimer);
+					this.playVideoTimer = null;
+				}
+			},
+			daoninleVoice() {
+				if(this.gameSet.volume) {
+					this.$refs.webview.evalJs("daoninleVoice()");
+				}
+			},
+			gameSuccessVoice() {
+				if(this.gameSet.volume) {
+					this.$refs.webview.evalJs("gameSuccessVoice()");
+				}
+			},
+			routerTo(url) {
+				uni.$api.router.push({
+					route:uni.$api.pagesConfig[url],
+					query:{}
+				});
+			},
+			gameFailVoice() {
+				if(this.gameSet.volume) {
+					this.$refs.webview.evalJs("gameFailVoice()");
+				}
+			},
+			btnVoice() {
+				if(this.gameSet.volume) {
+					// this.$refs.webview.evalJs("caozuodianjiVoice()");
+				}
+			},
+			xiazhuaVoice() {
+				if(this.gameSet.volume) {
+					this.$refs.webview.evalJs("xiazhuaVoice()");
+				}
+			},
+			readygoVoice() {
+				if(this.gameSet.volume) {
+					this.$refs.webview.evalJs("readygoVoice()");
+				}
+			},
+			backgroundVoice() {
+				if (this.machineId != 0 && this.gameSet.volume) {
+					this.$refs.webview.evalJs("backgroundVoice()");
+				}
+			},
+			backgroundVoiceStop() {
+				this.$refs.webview.evalJs("backgroundVoiceStop()");
+			},
+			changeVolume() {
+				let gameSet = this.gameSet;
+				gameSet.volume = !this.gameSet.volume;
+				uni.$api.store.commit('setGameSet',gameSet);
+				
+				if(gameSet.volume){
+					this.backgroundVoice();
+				}else {
+					this.backgroundVoiceStop();
+				}
+			},
+			callPutDoll() {
+				uni.$api.http.get(uni.$api.apiConfig.callPutDoll + "/" + this.machineId).then(res => {
+					this.showZhaoHuanPop = false;
+					$mHelper.toast("呼叫成功!");
+				}).catch(err => {
+				});
+			},
+			gameInstruction(){
+				
+			},
+			moveInControlpanel(){
+				let gameCP = uni.$api.helper.getEl(this.$refs.gameControlPanel);
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>800',
+					props:[
+						{
+							element:gameCP,
+							property:'transform.translateY',
+							expression: `easeInOutBack(t,0,-${this.panelHeight},800)`,
+						}
+					]
+				},(result)=>{
+					if(result.state=='exit'){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+					}
+				});
+			},
+			moveOutControlpanel(){
+				let gameCP = uni.$api.helper.getEl(this.$refs.gameControlPanel);
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>800',
+					props:[
+						{
+							element:gameCP,
+							property:'transform.translateY',
+							expression: `easeInOutBack(t,0,${this.panelHeight},800)`,
+						}
+					]
+				},(result)=>{
+					if(result.state=='exit'){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+					}
+				});
+			},
+			readyGoAnimation(){
+				let readyGo = uni.$api.helper.getEl(this.$refs.readyGo);
+				let bindingx = bindingX.bind({
+					eventType:'timing',
+					exitExpression: 't>1000',
+					props:[
+						{
+							element:readyGo,
+							property: 'transform.scale',
+							expression: 'easeInElastic(t,1,2,1000)'
+						}
+					]
+				},(result)=>{
+					if(result.state=='exit'){
+						bindingX.unbind({
+							token: bindingx.token,
+							eventType: 'timing'
+						});
+						setTimeout(()=>{
+							let back = bindingX.bind({
+								eventType:'timing',
+								exitExpression: 't>10',
+								props:[
+									{
+										element:readyGo,
+										property: 'transform.scale',
+										expression: 'easeOutBounce(t,2,-2,10)'
+									}
+								]
+							},(result)=>{
+								if(result.state=='exit'){
+									bindingX.unbind({
+										token: back.token,
+										eventType: 'timing'
+									});
+								}
+							});
+						},1000)
+					}
+				});
+			},
+			customerService() {
+				uni.$api.helper.toast("现在不是客服上班时间哦~");
+			},
+			/**  
+			* 触摸开始  
+			**/  
+			touchStart(e) {  
+				this.touchStartY = e.touches[0].screenY; 
+				// console.log("触摸开始-->" + this.touchStartY) 
+			},  
+
+			/**  
+			* 触摸结束  
+			**/  
+			touchEnd(e) {  
+				// console.log("触摸结束-->" + e.changedTouches[0].screenY)  
+				let deltaY = e.changedTouches[0].screenY - this.touchStartY;  
+				if(Math.abs(deltaY) > 50) {  
+					if (deltaY < 0) {  
+						this.openDollDetail();
+						// console.log("上滑")  
+					} else {  
+						// console.log("下滑")  
+					}  
+				} else {  
+					// console.log("可能是误触！")  
+				}  
+			}, 
+		},
+	}
+</script>
+
+<style>
+	.video {
+		/* background-color: #000000; */
+		/* border-radius: 16px; */
+	}
+
+	.box-shadow1 {
+		/* box-shadow: 2rpx 2rpx 2rpx rgba(0, 0, 0, 0.3); */
+	}
+
+	.wwj-border {
+		border: 10rpx solid #d6e9f1;
+	}
+
+	.current-player {
+		position: absolute;
+		left: 30rpx;
+		top: 30rpx;
+		width: 200rpx;
+		height: 90rpx;
+		z-index: 1;
+		border-radius: 25rpx;
+		background-color: rgba(255, 255, 255, 0.9);
+	}
+
+	.current-viewers {
+		position: absolute;
+		right: 20rpx;
+		top: 40rpx;
+		z-index: 1;
+		padding: 8rpx 12rpx 8rpx 12rpx;
+		border-radius: 25rpx;
+		background-color: rgba(38, 38, 38, 0.5);
+	}
+	
+	.baojia {
+		position: absolute;
+		right: 20rpx;
+		top: 120rpx;
+		z-index: 1;
+		padding: 8rpx;
+		border-radius: 20rpx;
+		background-color: rgba(38, 38, 38, 0.4);
+	}
+
+	.toolbars {
+		position: absolute;
+		right: 10rpx;
+		top: 300rpx;
+		z-index: 1;
+		width: 80rpx;
+		/* height: 280rpx; */
+		padding: 15rpx;
+		border-radius: 30rpx;
+		background-color: rgba(38, 38, 38, 0.5);
+	}
+
+	.tool-bar-item {
+		width: 50rpx;
+		height: 50rpx;
+	}
+</style>

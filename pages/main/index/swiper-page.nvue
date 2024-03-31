@@ -1,0 +1,314 @@
+<template>
+    <view class="uni-swiper-page">
+		<waterfall ref="list" 
+		class="list" 
+		:bounce="true" 
+		column-count="2" 
+		column-width="auto"
+		 :column-gap="10"
+		 :left-gap="10"
+		 :right-gap="10"
+		:fixFreezing="true" 
+		:offset-accuracy="5"
+		:show-scrollbar="false"
+		alwaysScrollableVertical="true"
+		@loadmore="onloading"
+		:loadmoreoffset="20"
+		>
+		    <cell class="cell" v-for="(item, index) in showDatas" :key="item.id" :ref="'item'+index">
+				<view class="flex flex-column list-item" @click="clickDoll(item)">
+					<view class="flex j-center a-center" style="margin-top: 12rpx;">
+						<image class="itemPhoto" :src="helper.formatImg(item.thumbnail)" mode="widthFix" style="min-height: 326rpx;"></image>
+					</view>
+					<view class="flex flex-column">
+						<view class="flex flex-row a-start j-start ml-2">
+							<view v-if="item.isBusy" style="width: 18rpx;height: 18rpx;">
+								<image src="../../../static/gif/playing.gif" style="width: 25rpx;height: 30rpx;" mode="widthFix"></image>
+							</view>
+							<view class="flex a-center j-center mt-1" v-else>
+								<image :src="api.assetsConfig.gameIdle" style="width: 18rpx;height: 18rpx;" mode="widthFix"></image>
+							</view>
+							<view class="flex-1 pr-1" style="padding-left: 5rpx;">
+								<text class="font-weight font26">{{ item.name }}</text>
+							</view>
+						</view>
+						<view class="flex flex-row j-sb mt-2 pl-2 pb-2">
+							<view class="flex flex-row">
+								<view class="flex flex-row j-center a-center border px-1" style="border-radius: 20rpx;">
+									<u-icon :name="api.assetsConfig.coin" :size="32"></u-icon>
+									<text class="font-sm dz-sale-price" :style="{ color: theme.dzMainColor }">{{ item.coin}}</text>
+									<text class="font-sm dz-sale-price-unit mt-1" :style="{ color: theme.dzMainColor }">币</text>
+								</view>
+								<!-- <view class="dz-factory-price" v-if="item.coinOri && item.coin != item.coinOri">
+									<text class="font-sm" >{{ item.coinOri}}</text>
+								</view> -->
+							</view>
+							<view class="a-center j-center mr-2">
+								<view class="border a-center j-center px-1" style="border-radius: 10rpx;">
+									<text class="font-sm" style="color: #909399;">{{item.machineIds ? item.machineIds.length : 0}}台</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+		    </cell>
+			
+			<header class="loading">
+				<u-loadmore :fontSize="28" :status="status" loadmoreText="上拉加载更多" loadingText="加载中..." nomoreText="没有更多了" :line="true">
+				</u-loadmore>
+			</header>
+			<cell>
+				<u-gap :height="placeholderHeight"></u-gap>
+			</cell>
+		
+		</waterfall>
+    </view>
+</template>
+
+<script>
+	// #ifdef APP-PLUS
+	const dom = weex.requireModule('dom');
+	// #endif
+    export default {
+        props: {
+            pid: {
+                type: [Number, String],
+                default: ''
+            },
+            parentId: {
+                type: String,
+                default: ''
+            },
+			currentTabIndex:{
+				type:[Number,String],
+				default:0
+			},
+			tabIndex:{
+				type:[Number,String],
+				default:0
+			},
+			datas:{
+				type:Array,
+				default:[]
+			}
+        },
+		watch: {
+			currentTabIndex(newValue, oldValue) {
+				if(oldValue != newValue && oldValue == this.tabIndex){
+					if(dom){
+						if(!this.$refs.item0){
+							return
+						}
+						const scrollToCell = this.$refs.item0[0];
+						if(scrollToCell) {
+							dom.scrollToElement(scrollToCell , {offset: 0});
+						}
+					}
+				}
+			},
+			datas(newValue, oldValue){
+				this.loadData();
+			}
+		},
+        data() {
+            return {
+                scrollable: true,
+                categoryDataList:[],
+				showDatas:[],
+				totalPageNum:0,
+				currentPage:0,
+				pageSize:20,
+				api:uni.$api,
+				helper:uni.$api.helper,
+				theme:uni.$api.theme,
+				status:"loadmore",
+				placeholderHeight:0,
+            }
+        },
+		mounted() {
+			let platform = uni.getSystemInfoSync().platform;
+			this.placeholderHeight = platform=='android'?10:200;
+		},
+        methods: {
+			clickDoll(item){
+				let id = item.id;
+				let machineIds = item.machineIds;
+				if(!machineIds || machineIds.length == 0){
+					uni.showToast({title:"暂无机器可用", icon:"none", mask:true});
+					return;
+				}else if(machineIds.length == 1){
+					uni.$api.http.get(uni.$api.apiConfig.checkMachineStatus + "/" + machineIds[0]).then(res=>{
+						let data = {machineId: machineIds[0],video:item.video}
+						uni.$api.store.commit('setLastEnterMachine',data);//为了兼容nvue与nvue之间传递的数据
+						uni.$api.router.push({
+							route:uni.$api.pagesConfig.game,
+							query:{
+								machine:encodeURIComponent(JSON.stringify(data))
+							}
+						});
+					}).catch(err=>{
+						console.log(err)
+					});
+				}else {
+					uni.navigateTo({
+						url: "/pages/game/machine?doll=" + encodeURIComponent(JSON.stringify(item))
+					})
+					// this.$emit("popMachineList",item);
+				}
+			},
+            setScrollRef(height) {
+                if (this.$refs['list'].setSpecialEffects) {
+					console.log(this.parentId, 'this.parentId----')
+					console.log(height, 'height----')
+                    this.$refs['list'].setSpecialEffects({
+                        id: this.parentId,
+                        headerHeight: height
+                    });
+                }
+            },
+            loadData() {
+                // 首次激活时被调用
+				this.loadCategoryDolls();
+				this.totalPageNum = Math.ceil(this.categoryDataList.length/this.pageSize) || 1;
+				this.currentPage = 0;
+				this.showDatas = [];
+				this.showDatas = this.categoryDataList.slice(this.currentPage*this.pageSize,(this.currentPage+1)*this.pageSize);
+				this.currentPage++;
+				if(this.currentPage >= this.totalPageNum){
+					this.status = "nomore";
+				}
+				this.$refs['list'].resetLoadmore();
+            },
+            clear() {
+                // 释放数据时被调用，参考 swiper-list 缓存配置
+                this.categoryDataList = [];
+				this.showDatas = [];
+            },
+			loadCategoryDolls() {
+				if (this.pid == 0) {
+					this.categoryDataList = this.datas;
+				} else {
+					this.categoryDataList = this.datas.filter((item) => {
+						let categoryIds = item.categoryIds.split(",");
+						return categoryIds.indexOf(this.pid + "") != -1;
+					});
+				}
+			},
+			onloading (event) {
+			  console.log(event);
+			  console.log(this.currentPage);
+			  console.log(this.totalPageNum);
+			  if(this.currentPage >= this.totalPageNum){
+				   this.status = "nomore";
+				   return
+			   }
+			  if(this.status == "loading") return
+			  this.status="loading"
+			  setTimeout(() => {
+				let pageData = this.categoryDataList.slice(this.currentPage*this.pageSize,(this.currentPage+1)*this.pageSize);
+				this.showDatas.push(...pageData);
+				this.currentPage++;
+				this.status="loadmore"
+			  }, 200)
+			},
+			refreshDollStatus(dollId,status){
+				let isInshowDatas = false;
+				this.showDatas.forEach((item,index)=>{
+					if(item.id == dollId){
+						item.isBusy = status;
+						isInshowDatas = true;
+					}
+				});
+				if(!isInshowDatas){
+					for(let i=this.currentPage*this.pageSize; i < this.categoryDataList.length;i++){
+						let item = this.categoryDataList[i];
+						if(item.id == dollId){
+							item.isBusy = status;
+						}
+					}
+				}
+			}
+        }
+    }
+</script>
+
+<style scoped>
+    .uni-swiper-page {
+        flex: 1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .list {
+        flex: 1;
+        background-color: #f8fafc;
+    }
+
+	.cell{
+		padding-top: 10rpx;
+		padding-bottom: 10rpx;
+		display: flex;
+		flex-direction: column;
+	}
+
+    .list-item {
+		border-radius: 30rpx;
+        background-color: #FFFFFF;
+    }
+
+	.itemName {
+	  font-size:28rpx;
+	  color:#333333;
+	  line-height:42rpx;
+	  text-align:left;
+	  margin-top: 24rpx;
+	}
+	.itemPhoto {
+		/* #ifndef APP-NVUE */
+		min-height: 326rpx;
+		/* #endif */
+	  width: 326rpx;
+	  border-radius: 30rpx;
+	  /* height: 220rpx; */
+	  margin-bottom: 18rpx;
+	}
+	.itemDesc {
+	  font-size:24rpx;
+	  margin:12rpx;
+	  color:#999999;
+	  line-height:36rpx;
+	  text-align:left;
+	}
+	
+	.dz-sale-price {
+		color: #000000;
+		font-size: 30rpx;
+		font-weight: bold;
+	}
+	.dz-sale-price-unit {
+		color: #000000;
+		font-size: 16rpx;
+		font-weight: bold;
+	}
+	.dz-factory-price {
+		font-size: 24rpx;
+		/* color: $dz-tips-color; */
+		text-decoration: line-through;
+		padding-left: 12rpx;
+	}
+	
+	.loading {
+	    height: 100rpx;
+	    width: 750rpx;
+	    flex-direction: row;
+	    align-items: center;
+	    justify-content: center;
+	  }
+	  .loadingText {
+	    color: #888888;
+		font-size: 13px;
+	  }
+</style>

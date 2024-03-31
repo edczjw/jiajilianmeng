@@ -1,0 +1,58 @@
+// 非nvue的样式
+/* #ifndef APP-NVUE */
+// 引入公共基础类
+@import '/core/css/animation.css';
+@import "./css/color.scss";
+@import "./css/style.vue.scss";
+@import "./css/common.scss";
+@import "/core/css/zcm-main.css";
+/* 图标 */
+@import '/core/iconfont.css';
+/* #endif */
+
+// nvue的特有样式
+/* #ifdef APP-NVUE */
+@import "./css/style.nvue.scss";
+@import "/core/css/zcm-main-nvue.css";
+/* #endif */
+
+// 小程序特有的样式
+/* #ifdef MP */
+@import "./css/style.mp.scss";
+/* #endif */
+
+// H5特有的样式
+/* #ifdef H5 */
+@import "./css/style.h5.scss";
+/* #endif */
+
+
+
+/* #ifndef APP-NVUE */
+/* 设置全局样式 */
+/* (1) 页面高度100%,默认字体28upx,默认行高1.8,背景颜色 */
+/* page{
+	height: 100%;
+	font-size: 28upx;
+	line-height: 1.8;
+	// background: #F8F8F8;
+} */
+/* (2) 图片默认100%宽度 */
+image{  width: 100%;  }
+::-webkit-scrollbar{
+	display: none;
+}
+/* #endif */
+/* 主色调 */
+/* 主背景颜色（橙色）*/
+.main-bg-color{ background-color: #FD6801; }
+/* 主点击背景颜色（淡橙色）*/
+.main-bg-hover-color{ background-color: rgba(253,104,1,0.85); }
+/* 主字体颜色（橙色）*/
+.main-text-color{color: #FD6801;}
+/* 主边框颜色 */
+.main-border-color{ border-color: #F1F1F1; }
+
+.input-border-color{
+	border-color: #FD6801;
+}

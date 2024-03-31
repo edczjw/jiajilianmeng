@@ -1,0 +1,753 @@
+<template>
+	<list :id="pageId" class="page" :bounce="true" fixFreezing="false" :show-scrollbar="false">
+		<cell>
+			<u-navbar>
+				<view class="d-flex a-center flex-nowrap" slot="left">
+					<view class="mt-1">
+						<image :src="api.assetsConfig.wwjDollLogo" style="width: 70rpx;height: 70rpx;border-radius: 15rpx;"></image>
+					</view>
+					
+					<view class="mt-1 ml-2">
+						<u-search placeholder="搜索" @focus="search" searchIconSize="46rpx" :bgColor="theme.dzBgColor" style="width: 400rpx;"
+						  :showAction="false" height="60rpx" shape="square"></u-search>
+					</view>
+				</view>
+				
+				<!-- <view class="px-2 my-1">
+				</view> -->
+				<view  class="flex flex-row a-center j-center box-shadow bg-white mt-1 px-1 py-1"
+					style="borderRadius: 50rpx;width: 180rpx;" slot="right" @tap="jumpTo(indexMenus[1])">
+					<u--image :src="'/static/icon/coin.png'" width="40" height="40"></u--image>
+					<text class="font-weight font-sm" style="color: gray;margin-left: 8rpx;">{{userInfo?userInfo.coin||0:0}}</text>
+					<text class="font-weight font-sm" style="color: gray;">币</text>
+				</view>
+
+			</u-navbar>
+			<view class="flex flex-row a-center j-center" :style="{height:navBarHeight}">
+				<view class="flex flex-column a-center j-center" style="margin-top: 40rpx;">
+					<!-- <u-loading-icon v-if="refreshing" class="indicator"></u-loading-icon>
+				<image v-else style="width: 50rpx;height: 50rpx;" :style="{transform: downRotate }"  src="https://www.mescroll.com/img/xinlang/mescroll-arrow.png" mode="widthFix"></image> -->
+					<image src="../../../static/gif/refresher_loading.gif" style="width: 60rpx;height: 60rpx;" mode="widthFix">
+					</image>
+					<text class="refreshText" style="font-size: 30rpx;">{{refreshText}}</text>
+				</view>
+			</view>
+		</cell>
+		<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
+		</refresh>
+
+		<cell class="">
+			<view id="head" class="header">
+				<!-- <view class="px-2 my-1">
+					<u-search placeholder="搜索" searchIconSize="46rpx" :bgColor="theme.dzBgColor" :disabled="true" @click="search" :showAction="false" height="58rpx" shape="square"></u-search>
+				</view> -->
+				<!-- <view class="mt-1" style="height: 300rpx;">
+					
+				</view>
+				<u-gap :height="25"></u-gap> -->
+				<view class="flex j-center py-1 mx-2 box-shadow bg-white"
+					:style="{borderRadius: '10rpx','marginTop': '20rpx'}">
+					
+					<u-scroll-list indicatorActiveColor="#f56c6c" style="top: 25rpx;"
+						:indicatorStyle="{bottom:'20rpx'}">
+						<view class="flex flex-row scroll-list">
+							<view class="a-center j-center" style="margin-left: 13rpx;margin-right: 13rpx;"
+								v-for="(item,index) in indexMenus" :key="index" @tap="jumpTo(item)">
+								<image class="" style="width: 70rpx;height: 70rpx;" :src="item.cover"></image>
+								<text class="font-sm m-1" style="color: #909399;">{{ item.title }}</text>
+							</view>
+						</view>
+					</u-scroll-list>
+					
+					<u-swiper :list="carouselList" @change="change" @click="bannerTab" keyName="img" height="300rpx"
+						indicator indicatorMode="line" circular previousMargin="20" nextMargin="20" radius="30"
+						duration="800" imgMode="aspectFill" bgColor="#fff"></u-swiper>
+					
+					
+				</view>
+				<!-- <u-gap :height="20"></u-gap> -->
+				<!-- <u-grid :border="false" col="2">
+			  <u-grid-item>
+				  <image style="width: 350rpx;" src="../../../static/index/playWay.png" mode="widthFix"></image>
+			  </u-grid-item>
+			  <u-grid-item>
+			  	  <image style="width: 350rpx;" src="../../../static/index/todayTj.png" mode="widthFix"></image>
+			  </u-grid-item>
+		  </u-grid> -->
+
+				<u-popup id="gameControlPanel" :bgColor="'#f3f4f6'" duration="350" :show="showDollMachineList"
+					round="80" mode="bottom" @close="closeDollMachineList">
+					<wwj-machine-list :doll="multiMachineDoll" @close="closeDollMachineList"></wwj-machine-list>
+				</u-popup>
+				<u-no-network
+					@connected="connected"
+				></u-no-network>
+			</view>
+		</cell>
+		<cell>
+			<view class="tabs" :style="'height:' + pageHeight + 'px'">
+				<scroll-view ref="tabbar1" id="tab-bar" class="tab-bar" style="height: 76rpx;margin-top: 30rpx;" :scroll="false"
+					:scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+					<view class="flex-column">
+						<view class="flex flex-row">
+							<view class="uni-tab-item flex j-center a-center" v-for="(tab,index) in tabList"
+								:key="tab.id" :id="'tab' +tab.id" :ref="'tabitem'+index" :data-id="index"
+								:data-current="index" @click="ontabtap">
+								<text class="uni-tab-item-title"
+									:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+							</view>
+						</view>
+						<view class="scroll-view-indicator">
+							<view ref="" class="flex scroll-view-underline a-center j-center"
+								:class="isTap ? 'scroll-view-animation':''"
+								:style="{left: indicatorLineLeft + 'px', width: indicatorLineWidth + 'px'}">
+								<image style="width: 50rpx;height: 16rpx;" :src="api.assetsConfig.tabindicator"
+									mode="aspectFit">
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+				<!-- <view class="tab-bar-line"></view> -->
+				<swiper class="tab-view" id="tab-bar-view" :current="tabIndex" :duration="300" @change="onswiperchange"
+					@transition="onswiperscroll" @animationfinish="animationfinish" @onAnimationEnd="animationfinish">
+					<swiper-item class="swiper-item" v-for="(category, index) in tabList" :key="index">
+						<swiper-page class="swiper-page" @popMachineList="popMachineList" :currentTabIndex="tabIndex"
+							:datas="allDollList" :tabIndex="index" :pid="category.id" :parentId="pageId" ref="page">
+						</swiper-page>
+					</swiper-item>
+				</swiper>
+			</view>
+		</cell>
+	</list>
+</template>
+
+<script>
+	// #ifdef APP-PLUS
+	const dom = weex.requireModule('dom');
+	// #endif
+
+	// 缓存每页最多
+	const MAX_CACHE_DATA = 100;
+
+	// 缓存页签数量
+	const MAX_CACHE_PAGE = 3;
+	const TAB_PRELOAD_OFFSET = 1;
+
+	import swiperPage from './swiper-page.nvue';
+	import {
+		mapState
+	} from 'vuex';
+	export default {
+		components: {
+			swiperPage
+		},
+		data() {
+			return {
+				refreshing: false,
+				refreshText: '下拉刷新',
+				tabList: [],
+				tabIndex: 0,
+				cacheTab: [],
+				scrollInto: "",
+				indicatorLineLeft: 0,
+				indicatorLineWidth: 0,
+				isTap: false,
+				showTitleView: true,
+				pageHeight: 300,
+				pageId: "homePage",
+				navBarHeight: 0,
+				helper: uni.$api.helper,
+				theme: uni.$api.theme,
+				api: uni.$api,
+				notifyAnnounce: [],
+				allDollList: [],
+				carouselList: [],
+				showDollMachineList: false,
+				multiMachineDoll: null,
+				downLoadType: 1,
+				indexMenus: [
+					
+					{
+						"title": "钜惠充值",
+						"cover": "/static/image/cz.png",
+						"jumpType": "navigate",
+						"url": "/pages/pay/recharge",
+						"path": "recharge"
+					},
+					{
+						"title": "金币口令",
+						"cover": "/static/image/kl.png",
+						"jumpType": "navigate",
+						"url": "/pages/sub/exchangePwd",
+						"path": "exchangePwd"
+					},
+					{
+						"title": "娃娃背包",
+						"cover": "/static/image/dollbag.png",
+						"jumpType": "navigate",
+						"url": "/pages/user/doll/dollBag",
+						"path": "dollBag"
+					},
+					{
+						"title": "积分商城",
+						"cover": "/static/image/sc.png",
+						"jumpType": "switch",
+						"url": "/pages/pointsmarket/market",
+						"path": "market"
+					},
+					{
+						"title": "邀请有礼",
+						"cover": "/static/image/yq.png",
+						"jumpType": "navigate",
+						"url": "/pages/user/poster/poster",
+						"path": "poster"
+					},
+					// {
+					// 	"title": "大神榜",
+					// 	"cover": "/static/image/rank.png",
+					// 	"jumpType": "navigate",
+					// 	"url": "/pages/rank/ranklist",
+					// 	"path": "ranklist"
+					// },
+					
+					// {
+					// 	"title": "我的订单",
+					// 	"cover": "/static/image/kl.png",
+					// 	"jumpType": "navigate",
+					// 	"url": "/pages/user/poster/poster"
+					// } 
+				]
+			}
+		},
+		async onLoad() {
+			await this.getIndexData();
+			this.addListener();
+		},
+		async onReady() {
+
+		},
+		computed: {
+			...mapState(['styleLoadingType', 'userInfo']),
+			// 旋转的角度
+			downRotate() {
+				return this.downLoadType === 2 ? 'rotate(-180deg)' : 'rotate(0deg)';
+			},
+		},
+		onShow() {
+		},
+		onHide() {
+		},
+		methods: {
+			retry(){
+			},
+			disconnected(){
+			},
+			async connected(){
+				//恢复网络后初始化app
+				await uni.$api.wwj.initWwjApp();
+				this.getIndexData();
+			},
+			addListener(){
+				//监听游戏状态
+				uni.$api.socket.on(uni.$api.socketioConfig.indexGameStatus, res => {
+					let categoryIds = res.categoryIds;
+					if(uni.$api.helper.isEmpty(categoryIds)){
+						return;
+					}
+					if(!uni.$api.helper.isEmpty(this.pageList)){
+						let dollId = res.id;
+						let status = res.status;
+						this.pageList.forEach((item,index)=>{
+							if(item.pid == 0){
+								item.refreshDollStatus(dollId,status);
+							}
+							let ids = categoryIds.split(",");
+							if(ids.indexOf(item.pid + "") != -1){
+								item.refreshDollStatus(dollId,status);
+							}
+						});
+					}
+				})
+				
+			},
+			async getIndexData() {
+				await uni.$api.http.get(uni.$api.apiConfig.getBanner + "indexCarousel,indexAd,speakerMsgs").then(res => {
+					if (res.data && res.data.indexCarousel) {
+						this.carouselList = res.data.indexCarousel;
+						this.carouselList.forEach((item, index) => {
+							this.$set(item, "img", uni.$api.helper.formatImg(item.img));
+						});
+					}
+					if (res.data && res.data.indexAd && res.data.indexAd.length > 0) {
+						res.data.indexAd[0];
+					}
+					if (res.data && res.data.speakerMsgs && res.data.speakerMsgs.length > 0) {
+						this.notifyAnnounce = [];
+						res.data.speakerMsgs.forEach((item, i) => {
+							this.notifyAnnounce.push(item.title);
+						});
+					}
+				}).catch(err=>{
+					console.log(err);
+					this.refreshing = false
+					this.refreshText = '网络异常，加载失败'
+					return;
+				});
+				await uni.$api.http.get(uni.$api.apiConfig.getAllDollList).then(res => {
+					this.allDollList = res.data.dollList || [];
+					this.tabList = res.data.categories || [];
+					this.tabList.splice(0, 0, {
+						id: 0,
+						name: '首页'
+					})
+				}).catch(err => {
+					console.log(err)
+				});
+				this.$nextTick(() => {
+					let platform = uni.getSystemInfoSync().platform;
+					let statusBarH = uni.getSystemInfoSync().statusBarHeight;
+					this.navBarHeight = statusBarH + 44;
+					this.pageHeight = platform == 'android' ? (uni.getSystemInfoSync().windowHeight - this
+						.navBarHeight) : (uni.getSystemInfoSync().windowHeight);
+					this._lastTabIndex = 0;
+					this._touchTabIndex = 0;
+					this._headHeight = 100;
+					this.swiperWidth = 0;
+					this.tabbarWidth = 0;
+					this.tabListSize = {};
+					this.pageList = this.$refs.page;
+					setTimeout(() => {
+						this.selectorQuery();
+					}, 1000)
+					
+				});
+				setTimeout(() => {
+					this.refreshing = false
+					this.refreshText = '加载成功'
+					this.downLoadType = 1
+				}, 1000)
+			},
+			randomGoGame() {
+				let allMachineIds = [];
+				this.allDollList.forEach((item, index) => {
+					allMachineIds.push(...item.machineIds);
+				});
+				if (allMachineIds.length == 0) {
+					return;
+				}
+				let index = Math.floor(Math.random() * allMachineIds.length + 1) - 1;
+				let machineId = allMachineIds[index];
+				let data = {
+					machineId: machineId,
+					video: null
+				}
+				uni.$api.store.commit('setLastEnterMachine', data); //为了兼容nvue与nvue之间传递的数据
+				uni.$api.router.push({
+					route: uni.$api.pagesConfig.game,
+					query: {
+						machine: encodeURIComponent(JSON.stringify(data))
+					}
+				});
+			},
+			closeDollMachineList() {
+				this.showDollMachineList = false;
+			},
+			popMachineList(item) {
+				this.showDollMachineList = true;
+				this.multiMachineDoll = item;
+			},
+			ontabtap(e) {
+				let index = e.target.dataset.current || e.currentTarget.dataset.current;
+				//let offsetIndex = this._touchTabIndex = Math.abs(index - this._lastTabIndex) > 1;
+
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				this.isTap = true;
+				var currentSize = this.tabListSize[index];
+				this.updateIndicator(currentSize.left, currentSize.width);
+				this._touchTabIndex = index;
+				// #endif
+
+				this.switchTab(index);
+			},
+			onswiperchange(e) {
+				// 注意：百度小程序会触发2次
+
+				// #ifndef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				let index = e.target.current || e.detail.current;
+				this.switchTab(index);
+				// #endif
+			},
+			onswiperscroll(e) {
+				if (this.isTap) {
+					return;
+				}
+
+
+				var offsetX = e.detail.dx;
+				var preloadIndex = this._lastTabIndex;
+				if (offsetX > TAB_PRELOAD_OFFSET) {
+					preloadIndex++;
+				} else if (offsetX < -TAB_PRELOAD_OFFSET) {
+					preloadIndex--;
+				}
+				if (preloadIndex === this._lastTabIndex || preloadIndex < 0 || preloadIndex > this.pageList.length - 1) {
+					return;
+				}
+				if (this.pageList[preloadIndex].categoryDataList.length === 0) {
+					this.loadTabData(preloadIndex);
+				}
+
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				var percentage = Math.abs(this.swiperWidth / offsetX);
+				var currentSize = this.tabListSize[this._lastTabIndex];
+				var preloadSize = this.tabListSize[preloadIndex];
+				var lineL = currentSize.left + (preloadSize.left - currentSize.left) / percentage;
+				var lineW = currentSize.width + (preloadSize.width - currentSize.width) / percentage;
+				this.updateIndicator(lineL, lineW);
+				// #endif
+			},
+			animationfinish(e) {
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				let index = e.detail.current;
+				if (this._touchTabIndex === index) {
+					this.isTap = false;
+				}
+				this._lastTabIndex = index;
+				this.switchTab(index);
+				this.updateIndicator(this.tabListSize[index].left, this.tabListSize[index].width);
+				// #endif
+			},
+			selectorQuery() {
+				uni.createSelectorQuery().in(this).select('#head').boundingClientRect().exec(rect => {
+					this._headHeight = rect[0].height + 10;
+				});
+
+				// 查询 tabbar 宽度
+				uni.createSelectorQuery().in(this).select('#tab-bar').boundingClientRect().exec(rect => {
+					this.tabbarWidth = rect[0].width;
+				});
+				// 查询 tabview 宽度
+				uni.createSelectorQuery().in(this).select('#tab-bar-view').boundingClientRect().exec(rect => {
+					this.swiperWidth = rect[0].width;
+				});
+
+				// 因 nvue 暂不支持 class 查询
+				var queryTabSize = uni.createSelectorQuery().in(this);
+				for (var i = 0; i < this.tabList.length; i++) {
+					queryTabSize.select('#tab' + this.tabList[i].id).boundingClientRect();
+				}
+				queryTabSize.exec(rects => {
+					rects.forEach((rect) => {
+						let index = rect.dataset.id;
+						let preIndex = index==0?index:index-1;
+						this.tabListSize[index] = {};
+						if(index == 0){
+							this.tabListSize[index].left = rect.width*index;
+							this.tabListSize[index].width = rect.width;
+							this.tabListSize[index].right =  rect.width*index + rect.width;
+						}else{
+							this.tabListSize[index].left = this.tabListSize[preIndex].right;
+							this.tabListSize[index].width = rect.width;
+							this.tabListSize[index].right =  this.tabListSize[preIndex].right + rect.width;
+						}
+						
+					})
+					this.updateIndicator(this.tabListSize[this.tabIndex].left, this.tabListSize[this.tabIndex]
+						.width);
+					this.switchTab(this.tabIndex);
+					this._lastTabIndex = this.tabIndex;
+				});
+			},
+			updateIndicator(left, width) {
+				this.indicatorLineLeft = left;
+				this.indicatorLineWidth = width;
+			},
+			switchTab(index) {
+				if (this.pageList[index].categoryDataList.length === 0) {
+					this.loadTabData(index);
+				}
+
+				this.pageList[index].setScrollRef(this._headHeight);
+
+				if (this.tabIndex === index) {
+					return;
+				}
+
+				// 缓存 tabId
+				if (this.pageList[this.tabIndex].categoryDataList.length > MAX_CACHE_DATA) {
+					let isExist = this.cacheTab.indexOf(this.tabIndex);
+					if (isExist < 0) {
+						this.cacheTab.push(this.tabIndex);
+					}
+				}
+
+				this.tabIndex = index;
+
+				// #ifdef APP-NVUE
+				this.scrollTabTo(index);
+				// #endif
+				// #ifndef APP-NVUE
+				this.scrollInto = this.tabList[index].id;
+				// #endif
+
+				// 释放 tabId
+				if (this.cacheTab.length > MAX_CACHE_PAGE) {
+					let cacheIndex = this.cacheTab[0];
+					this.clearTabData(cacheIndex);
+					this.cacheTab.splice(0, 1);
+				}
+			},
+			scrollTabTo(index) {
+				const el = this.$refs['tabitem' + index][0];
+				let offset = 0;
+				// TODO fix ios offset
+				if (index > 0) {
+					offset = this.tabbarWidth / 2 - this.tabListSize[index].width / 2;
+					if (this.tabListSize[index].right < this.tabbarWidth / 2) {
+						offset = this.tabListSize[0].width;
+					}
+				}
+				dom.scrollToElement(el, {
+					offset: -offset
+				});
+			},
+			loadTabData(index) {
+				this.pageList[index].loadData();
+			},
+			clearTabData(index) {
+				this.pageList[index].clear();
+			},
+
+			onrefresh(event) {
+				this.refreshing = true
+				this.refreshText = "刷新数据中..."
+
+				this.getIndexData();
+
+				/* setTimeout(() => {
+				  this.refreshing = false
+				  this.refreshText = '下拉刷新'
+				  this.downLoadType=1
+				}, 2000) */
+			},
+
+			onpullingdown(event) {
+				this.refreshText = "下拉刷新"
+				if (this.refreshing == true) {
+					return;
+				}
+				if (Math.abs(event.pullingDistance) > this.navBarHeight) {
+					this.downLoadType = 1;
+					this.refreshText = '下拉刷新'
+				}
+				if (Math.abs(event.pullingDistance) > Math.abs(event.viewHeight)) {
+					this.downLoadType = 2;
+					this.refreshText = '释放更新'
+				}
+			},
+			bannerTab(index) {
+				let item = this.carouselList[index];
+				if(item.jumpType == 'outLink'){
+					// #ifdef APP-PLUS
+					plus.runtime.openURL(item.jumpLink, function(res) {});
+					// #endif
+				}else if(item.jumpType == 'innerPage'){
+					uni.$api.router.push({
+						route: uni.$api.pagesConfig[item.jumpLink],
+						query: {}
+					});
+				}else if(item.jumpType == 'innerWebview'){
+					uni.navigateTo({
+						url : "/pages/public/webview?url=" + encodeURIComponent(item.jumpLink),
+					})
+				}else if(item.jumpType == 'article'){
+					uni.navigateTo({
+						url : "/pages/public/article?id=" + item.jumpLink,
+					})
+				}
+			},
+			jumpTo(item) {
+				uni.$api.router.push({
+					route: uni.$api.pagesConfig[item.path],
+					query: {}
+				});
+			},
+			search(){
+				
+				uni.$api.router.push({
+					route:uni.$api.pagesConfig.search,
+					query:{}
+				});
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-PLUS */
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+	}
+
+	/* #endif */
+
+	.page {
+		flex: 1;
+		background-color: #fff;
+	}
+
+	.header {
+		background-color: #fff;
+	}
+
+	.header-title {
+		font-size: 30px;
+		font-weight: bold;
+		color: #444;
+	}
+
+	.flexible-view {
+		background-color: #f823ff;
+	}
+
+	.page-head {
+		height: 200px;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background-color: red;
+	}
+
+	.tabs {
+		flex-direction: column;
+		overflow: hidden;
+		background-color: #ffffff;
+		margin-top: 10rpx;
+		/* border-top-left-radius: 30rpx;
+	border-top-right-radius: 30rpx;
+	box-shadow: 0rpx 0rpx 2rpx rgba(0, 0, 0, 0.2); */
+		/* #ifdef MP-ALIPAY || MP-BAIDU */
+		height: 100vh;
+		/* #endif */
+	}
+
+	.tab-bar {
+		width: 750upx;
+		height: 84upx;
+		flex-direction: row;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+	}
+
+	/* #ifndef APP-NVUE */
+	.tab-bar ::-webkit-scrollbar {
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+	}
+
+	/* #endif */
+
+	.scroll-view-indicator {
+		position: relative;
+		height: 16rpx;
+		background-color: transparent;
+	}
+
+	.scroll-view-underline {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 0;
+		height: 16rpx;
+		background-color: #fff;
+	}
+
+	.scroll-view-animation {
+		transition-duration: 0.2s;
+		transition-property: left;
+	}
+
+	.tab-bar-line {
+		height: 1upx;
+		background-color: #cccccc;
+	}
+
+	.tab-view {
+		flex: 1;
+	}
+
+	.uni-tab-item {
+		/* #ifndef APP-PLUS */
+		display: inline-block;
+		/* #endif */
+		display: flex;
+		flex-wrap: nowrap;
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.uni-tab-item-title {
+		color: #909399;
+		font-size: 28upx;
+		height: 50upx;
+		line-height: 50upx;
+		flex-wrap: nowrap;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+	}
+
+	.uni-tab-item-title-active {
+		color: #000;
+		font-size: 29upx;
+		font-weight: bold;
+	}
+
+	.swiper-item {
+		flex: 1;
+		flex-direction: column;
+	}
+
+	.swiper-page {
+		flex: 1;
+		flex-direction: row;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	.refresh {
+		height: 128rpx;
+		width: 750rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.refreshText {
+		color: #888888;
+		font-weight: bold;
+	}
+
+	.indicator {
+		color: #888888;
+		height: 40rpx;
+		width: 40rpx;
+		margin-right: 20rpx;
+	}
+
+	.absolute {
+		position: absolute;
+		top: 0rpx;
+		width: 750rpx;
+		height: 377rpx;
+	}
+</style>

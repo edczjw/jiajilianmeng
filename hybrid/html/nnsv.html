@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+</head>
+
+<body style="padding: 0; margin: 0;overflow:hidden">
+  <div style="margin:0 auto">
+	<div id="videoLoading" style="position: absolute;z-index: 999;width: 40%;height:auto;margin-left: 30%;margin-top:35%;">
+		<img src='loading.gif' style="width: 150px;height: 150px;"/>
+	</div>
+    <div>
+      <canvas id="video1" style="width:100%;height:100%;position:absolute;background-color: black;"></canvas>
+    </div>
+	<div style="width:100%;height:100%;position:absolute"></div>
+  </div>
+  <script type="text/javascript" src="nbsk.js"></script>
+  <script type="text/javascript" src="https://oss.fszhuazhuale.com/lib/nnmw.js?v=2"></script>
+  <script type="text/javascript" src="uni.webview.1.5.3.js"></script>
+  <script type="text/javascript" src="nnwj.js"></script>
+</body>
+
+<script>
+	var caozuodianji;
+	function caozuodianjiVoice() {
+		if(!caozuodianji){
+			caozuodianji = new Audio("voice/caozuodianji.mp3");
+		}
+		caozuodianji.play();
+	}
+	
+	function caozuodianjiVoiceStop() {
+		caozuodianji.pause();
+	}
+	
+	var readygo;
+	function readygoVoice() {
+		if(!readygo){
+			readygo = new Audio("voice/readygo.mp3");
+		}
+		readygo.play();
+	}
+	
+	var xiazhua;
+	function xiazhuaVoice() {
+		if(!xiazhua){
+			xiazhua = new Audio("voice/xiazhua.mp3");
+		}
+		xiazhua.play();
+	}
+	
+	var gameSuccess;
+	function gameSuccessVoice() {
+		if(!gameSuccess){
+			gameSuccess = new Audio("voice/game-success.mp3");
+		}
+		gameSuccess.play();
+	}
+	
+	var gameFail;
+	function gameFailVoice() {
+		if(!gameFail){
+			gameFail = new Audio("voice/game-fail.mp3");
+		}
+		gameFail.play();
+	}
+	
+	var daoninle;
+	function daoninleVoice() {
+		if(!daoninle){
+			daoninle = new Audio("voice/daoninle.mp3");
+		}
+		daoninle.play();
+	}
+	
+	var background;
+	function backgroundVoice() {
+		if(!background){
+			background = new Audio("voice/background.mp3");
+			background.loop = true;
+		}
+		background.play(); 
+		// document.getElementById('background').play();
+	}
+	
+	function backgroundVoiceStop() {
+		background.pause();
+		// document.getElementById('background').pause();
+	}
+
+</script>
+</html>

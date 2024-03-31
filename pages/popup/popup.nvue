@@ -1,0 +1,33 @@
+<template>
+	<view class="flex-1 a-center j-center" ref="mask" style="background-color: rgba(0, 0, 0, 0.5);" @tap.stop="close($event)">
+		<view class="popup bg-white" ref="pop" style="width: 200rpx;height: 300rpx;" @tap.stop="click($event)">
+			<view class="">
+				<text>helloWorld</text>
+			</view>
+			
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		onLoad(e) {
+			console.log(e);
+			uni.$once("doll",data=>{
+				
+			})
+		},
+		methods: {
+			close(e) {
+				uni.navigateBack();
+			},
+			click(e){
+				e.stopPropagation();
+			}
+		},
+	}
+</script>
+
+<style>
+
+</style>

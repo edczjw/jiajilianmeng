@@ -1,0 +1,37 @@
+/**
+ * socket 协议定义
+ */
+export default{
+	//玩家登陆
+	playerLogin:'10000',
+	//进入房间
+	enterRoom:'10001',
+	//离开房间
+	leaveRoom:'10002',
+	//游戏公告
+	gameNotice:'10003',
+	//开始游戏
+	playStart:'10004',
+	//操作命令
+	operateCmd:'10005',
+	//服务端推送游戏开始
+	pushGameStart:'10006',
+	//服务端推送游戏结果
+	pushGameResult:'10007',
+	//推送游戏状态
+	pushGameStatus:'10008',
+	//推送被踢下线
+	pushKickout:'10009',
+	//推送玩家信息
+	pushPlayerInfo:'10010',
+	//取消预约游戏
+	cancelSubribe:'10011',
+	//广播其他玩家成功抓取
+	broadCatchSuccessNotice:'10012',
+	//心跳协议
+	heartbeat:'90002',
+	//飘字协议
+	scrollMessage:'10012',
+	//推送首页游戏状态
+	indexGameStatus:'10999',
+}
