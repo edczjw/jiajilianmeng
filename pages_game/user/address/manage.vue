@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar input-align="center" :title="title"></dz-navbar>
+		<!-- #endif -->
 		<view class="content">
 			<dz-field
 				class="row-address"
