@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title="" :is-back="false" :isFixed="false" :background="{background:''}" :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view class="wrap">
 			<view v-if="showVisitor" class="position-absolute text-dark" style="right: 50rpx; top:100rpx;z-index: 999;" @click="showModal">游客模式</view>
 			<view class="content">

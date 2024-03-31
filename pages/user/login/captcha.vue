@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :is-fixed="true" :title="language.loginCode.titleCode"></dz-navbar>
+		<!-- #endif -->
 		<view class="key-input">
 			<view class="title">{{ language.loginCode.inputCode }}</view>
 			<view class="tips">{{ $api.helper.formatString(language.loginCode.codeSendTo, maskMobile) }}</view>

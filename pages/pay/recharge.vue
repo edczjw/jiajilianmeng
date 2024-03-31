@@ -1,8 +1,10 @@
 <template>
 	<view class="bg-white">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='充值中心' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view elevation="20rpx" class="p-2 bg-white mx-2 box-shadow-card" style="border-radius: 20rpx;">
-			<u-swiper v-if="carouselList && carouselList.length > 0" :list="carouselList" @click="" keyName="img" height="250rpx"
+			<u-swiper v-if="carouselList && carouselList.length > 0" :list="carouselList" keyName="img" height="250rpx"
 				indicator indicatorMode="line" circular radius="20"
 				duration="800" imgMode="scaleToFill" bgColor="#fff"></u-swiper>
 			<!-- <image src="../../static/pay/banner.png" style="height: 250rpx;border-radius: 20rpx;" mode=""></image> -->
@@ -184,6 +186,8 @@
 				this.payType = index;
 			},
 			toPay(item) {
+				this.$api.helper.toast('敬请期待')
+				return
 				if(this.inappPurchase) {
 					this.requestAppleiapInfo(item.iosProductid, item.id);
 				} else {

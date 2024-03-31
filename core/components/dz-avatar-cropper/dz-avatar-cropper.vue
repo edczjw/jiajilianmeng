@@ -1,6 +1,8 @@
 <template>
 	<view class="content">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="'头像裁剪'" :immersive="true"></dz-navbar>
+		<!-- #endif -->
 		<view class="cropper-wrapper" :style="{ height: cropperOpt.height + 'px' }">
 			<canvas
 				class="cropper"

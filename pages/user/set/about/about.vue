@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="language.user.privacyPolicy"></dz-navbar>
+		<!-- #endif -->
 		<dz-cell-group>
 			<dz-cell-item center title="注册协议" @tap="cellTap('register')"></dz-cell-item>
 			<dz-cell-item center title="隐私政策" @tap="cellTap('privacy')"></dz-cell-item>

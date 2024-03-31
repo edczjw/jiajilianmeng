@@ -3,6 +3,7 @@
 		<view class="custom-page"
 			:style="{background: indexConfig.pageColorMode == 'default' ? indexConfig.pageColor : 
 			  indexConfig.pageLinearColor && indexConfig.pageLinearColor.color ? indexConfig.pageLinearColor.color : '#f3f4f6'}">
+			
 			<!-- 页面背景图-->
 			<view v-if="indexConfig.backgroundPicture" class="custom-bg-img">
 				<image :src="indexConfig.backgroundPicture"
@@ -14,6 +15,7 @@
 				:style="{background: indexConfig.pageColorMode == 'default' ? indexConfig.pageColor : 
 			  indexConfig.pageLinearColor && indexConfig.pageLinearColor.color ? indexConfig.pageLinearColor.color : '#f3f4f6'}">
 				<!-- navbar -->
+				<!-- #ifndef MP-TOUTIAO -->
 				<dz-navbar-immersive splitLine :isCustom="true" @init="initNavigation" @change="opacityChange" scrollRatio="0.2"
 					:scrollTop="scrollTop-400" :title="'test'" backgroundColor="#fff" :color="theme.dzMainColor">
 					<dz-navbar :is-fixed="true" :is-back="false" input-align="center" :borderBottom="false" :style="{opacity:this.opacity}"
@@ -42,7 +44,9 @@
 						</view>
 					</dz-navbar>
 				</dz-navbar-immersive>
+				<!-- #endif -->
 				<view v-for="(item,index) in indexComponents" :key="index" :id="item.component">
+					<!-- #ifndef MP-TOUTIAO -->
 					<view v-if="item.component == 'dz-gap'">
 						<dz-gap ref="dzGap" :height="parseInt(item.props.height) * 2" :bg-color="item.props.bgColor"></dz-gap>
 					</view>
@@ -88,10 +92,12 @@
 							</view>
 						</dz-navbar>
 					</view>
+					<!-- #endif -->
 					<view v-if="item.component == 'wwj-loading'">
 						<wwj-loading v-if="pullDownLoadingShow" :mode="styleLoadingType" :color="$api.theme.dzBaseColor"
 							size="70"></wwj-loading>
 					</view>
+					<!-- #ifndef MP-TOUTIAO -->
 					<view v-if="item.component == 'dz-search'">
 						<view :style="{
 								width: '100%',
@@ -105,6 +111,7 @@
 						</dz-search>
 						</view>
 					</view>
+					<!-- #endif -->
 					<!-- 公告 -->
 					<!-- <view v-if="item.component == 'dz-notice-bar'" :style="{
 							margin: `${parseInt(item.props.topBottom) * 2}rpx ${parseInt(item.props.leftRight) * 2}rpx`
@@ -147,7 +154,7 @@
 							:left-right="parseInt(item.props.leftRight) * 2"
 							:top-bottom="parseInt(item.props.topBottom) * 2" :border="false"
 							:dot-color="item.props.dotColor" :mode="item.props.mode" :colNum="item.props.colNum"
-							@click="gridAdvClick(index, $event)"></dz-grid-menu>
+							@click="gridAdvClick(item)"></dz-grid-menu>
 					</view>
 
 					<!-- 图片广告 -->
@@ -374,9 +381,9 @@
 			rubiksCube() {
 
 			},
-			gridAdvClick(index, event) {
-
-			},
+			gridAdvClick(item, event) {
+				this.$api.helper.toast('敬请期待') 
+			}, 
 			banner(link) {},
 			pageLoadingClick() {
 				this.getInfoData();

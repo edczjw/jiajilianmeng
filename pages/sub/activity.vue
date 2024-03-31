@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :isBack="false" title="活动" :titleBold="true" :titleSize="36" :borderBottom="false">
+			<!-- #endif -->
 		</dz-navbar>
 		<view class="position-relative">
 			<image  src="../../static/image/activity_dw.png" style="width: 750rpx;height: 1333rpx;"></image>

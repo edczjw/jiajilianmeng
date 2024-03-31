@@ -1,8 +1,18 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='积分明细' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
+		
+		<!-- #ifdef MP-TOUTIAO -->
+		<view class="dz-tab">
+		<!-- #endif -->
 		<dz-tabs :list="tabList" :current="current" :is-scroll="false" bar-height="8" :active-color="theme.dzBaseColor"
 			@change="tabChange" style="position: fixed;width: 100%;z-index: 2;"></dz-tabs>
+			
+		<!-- #ifdef MP-TOUTIAO -->
+		</view>
+		<!-- #endif -->
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback" @up="upCallback">
 			<view class="bg-white" style="margin-top: 82rpx;">
 				
@@ -102,5 +112,12 @@
 </script>
 
 <style lang="scss">
-	
+	/* #ifdef MP-TOUTIAO */
+	.dz-tab{
+		position: fixed;
+		left: 0;
+		width: 100%;
+		top: 0;
+	} 
+	/* #endif */
 </style>

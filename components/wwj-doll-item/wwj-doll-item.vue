@@ -102,6 +102,8 @@ export default{
 	},
 	methods: {
 		clickDoll(item) {
+			this.$api.helper.toast('敬请期待')
+			return
 			let id = item.id;
 			let machineIds = item.machineIds;
 			if(!machineIds || machineIds.length == 0){

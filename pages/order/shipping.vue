@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar-immersive splitLine scrollRatio="0.3" :isCustom="true" @change="opacityChange" :scrollTop="scrollTop" backgroundColor="#fff" :style="[navbarStyle]">
 			<dz-navbar :title="'物流信息'"></dz-navbar>
 		</dz-navbar-immersive>
@@ -11,6 +12,7 @@
 			:title-color="theme.dzBaseFontColor"
 			:back-icon-color="theme.dzBaseFontColor"
 		></dz-navbar>
+		<!-- #endif -->
 		<view>
 			<view class="banner-bg" :style="{ background: theme.dzBaseColor }"></view>
 			<view class="product-boxs" v-if="shippingDetail">

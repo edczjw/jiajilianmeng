@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='机器列表' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		
 		<u-sticky bgColor="#f3f3f3" :customNavHeight="helper.px2rpx(this.navbarHeight)">
 			<view class="flex mx-5 mt-2 shadow-lg rounded-20" style="z-index: 9999;" @tap="openDollDetail">

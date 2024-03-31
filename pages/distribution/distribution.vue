@@ -3,6 +3,7 @@
 		<!-- <dz-navbar-immersive splitLine scrollRatio="0.3" :isCustom="true" @change="opacityChange" :scrollTop="scrollTop" backgroundColor="#fff" :style="[navbarStyle]">
 			<dz-navbar title="推广中心"></dz-navbar>
 		</dz-navbar-immersive> -->
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar
 			title="推广中心"
 			:title-color="theme.dzBaseFontColor"
@@ -10,6 +11,7 @@
 			:border-bottom="false"
 			:background="{ background: 'linear-gradient(90deg, ' + theme.dzBaseDark + ', ' + theme.dzBaseColor + ')' }"
 		></dz-navbar>
+		<!-- #endif -->
 		<wwj-scroll-body class="goodlist" @init="mescrollInit" @down="downCallback" @up="upCallback">
 			<view class="pure_top" :style="{ background: 'linear-gradient(90deg, ' + theme.dzBaseDark + ', ' + theme.dzBaseColor + ')' }"></view>
 			<view class="content">

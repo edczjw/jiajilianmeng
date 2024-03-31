@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="type == 1 ? '娃娃订单' : '兑换订单'" :borderBottom="false"></dz-navbar>
+		<!-- #endif -->
 		<!--滑动栏-->
 		<view class="dz-tab"><dz-tabs :list="list" :current="current" :is-scroll="false" :activeColor="theme.dzBaseColor" bar-height="8" @change="tabsChange"></dz-tabs></view>
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback" @up="upCallback">
@@ -346,6 +348,9 @@ export default {
 	position: fixed;
 	width: 100%; //这里必须设置100%，否则在fixed情况下不能左右滑动
 	z-index: 992;
+	/* #ifdef MP-TOUTIAO */
+	top: 0;
+	/* #endif */
 }
 
 .dz-content {

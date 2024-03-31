@@ -1,7 +1,9 @@
 <template>
 	<view class="bg-white">
+		<!-- #ifndef MP-TOUTIAO -->
 		<!-- <dz-navbar :isBack="false" :title="barTitle" :titleBold="true" :titleSize="36" :borderBottom="false"></dz-navbar> -->
 		<dz-navbar title='大神榜' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback">
 		<!-- <wwj-scroll-body @down="downCallback"> -->
 			<dz-gap :height="100"></dz-gap>

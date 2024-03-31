@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="'提现记录'" :borderBottom="false"></dz-navbar>
+		<!-- #endif -->
 		<dz-tabs
 			:list="tabList"
 			:current="current"

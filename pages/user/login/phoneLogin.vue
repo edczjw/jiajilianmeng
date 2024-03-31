@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title="手机登录" :isFixed="false" :background="{background:''}"></dz-navbar>
+		<!-- #endif -->
 		<view class="wrap">
 			<view class="content">
 				<view class="logo"><image :src="logo" mode="widthFix"></image></view>

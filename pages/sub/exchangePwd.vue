@@ -1,6 +1,8 @@
 <template>
 	<view class="mx-5">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='口令红包' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		
 		<dz-gap :height="30"></dz-gap>
 		

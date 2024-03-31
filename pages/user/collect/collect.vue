@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="language.profile.myCollection"></dz-navbar>
+		<!-- #endif -->
 		<view class="content" v-if="collectList.length > 0">
 			<view class="item" v-for="(item, index) in collectList" :key="index" @tap="toGamePage(item)">
 				<view class="img">

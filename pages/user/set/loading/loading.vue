@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title="Loading加载动画" :background="{ background: theme.dzBgColor }" :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view class="warp">
 			<view class="content">
 				<view v-if="style_loading_type == 'flower' || style_loading_type == 'circle'" class="dz-flex dz-row-center">

@@ -1,8 +1,17 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='金币明细' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
+		<!-- #ifdef MP-TOUTIAO -->
+		<view class="da-tab">
+		<!-- #endif -->
 		<dz-tabs :list="tabList" :current="current" :is-scroll="false" bar-height="8" :active-color="theme.dzBaseColor"
 			@change="tabChange" style="position: fixed;width: 100%;z-index: 2;"></dz-tabs>
+			
+		<!-- #ifndef MP-TOUTIAO -->
+		</view>
+		<!-- #endif -->
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback" @up="upCallback">
 			<view class="bg-white" style="margin-top: 82rpx;">
 				
@@ -102,5 +111,9 @@
 </script>
 
 <style lang="scss">
-	
+	.da-tab{
+		position: fixed;width: 100%;
+		top: 0;
+		left: 0;
+	}
 </style>

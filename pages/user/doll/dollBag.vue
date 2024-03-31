@@ -1,6 +1,8 @@
 <template>
 	<view class="bg-white">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='娃娃背包' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view class="">
 			<u-sticky bgColor="#fff" >
 				<u-tabs

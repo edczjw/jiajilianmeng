@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="language.profile.userInfo"></dz-navbar>
+		<!-- #endif -->
 		<view>
 			<dz-cell-group :border="false">
 				<dz-cell-item  :borderBottom="true" :arrow="false">

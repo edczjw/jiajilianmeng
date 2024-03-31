@@ -1,8 +1,10 @@
 <template>
 	
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :isBack="false" title="欢乐抓娃娃" :titleBold="true" :titleSize="36" :borderBottom="false">
 		</dz-navbar>
+		<!-- #endif -->
 		<web-view :webview-styles="webviewStyles" :src="url"></web-view>
 	</view>
 </template>

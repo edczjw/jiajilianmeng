@@ -1,6 +1,8 @@
 <template>
 	<view class="p-3">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='提交申诉' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view class="shadow-lg rounded-20">
 			<view class="flex j-start a-center mx-3 px-2 pt-3">
 				<u--image :src="utils.formatImg(thumbnail)" width="160rpx" height="160rpx" radius="20rpx"></u--image>

@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="language.product.titleProduct"></dz-navbar>
+		<!-- #endif -->
 		<view class="content">
 			<view class="des">
 				<view class="dz-font-xl dz-font-weight">{{product.name}}</view>

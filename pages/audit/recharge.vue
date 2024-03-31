@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title="充值中心" :borderBottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view class="head">
 			<view class="dz-p-20 dz-text-center dz-font-weight dz-font-lg" :style="{ color: theme.dzBaseColor }">金币余额：{{ userInfo.coin }}</view>
 			<dz-line></dz-line>

@@ -1,8 +1,10 @@
 <template>
 	<view class="bg-white">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :isBack="false" :title="barTitle" :titleBold="true" :titleSize="36" :borderBottom="false">
 		</dz-navbar>
 		<dz-gap :height="20"></dz-gap>
+		<!-- #endif -->
 		<view class="">
 			<wwj-scroll-body class="goodlist" @init="mescrollInit" @down="downCallback" @up="upCallback">
 				<view elevation="20rpx" class="p-2 bg-white mx-2 box-shadow-card" style="border-radius: 20rpx;">

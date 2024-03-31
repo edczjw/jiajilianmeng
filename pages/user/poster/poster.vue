@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='邀请好友' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		
 		<view class="position-relative">
 			<image  src="../../../static/invite/invite.png" style="width: 750rpx;height: 1333rpx;"></image>

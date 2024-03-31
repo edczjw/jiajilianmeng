@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="'申请提现'"></dz-navbar>
+		<!-- #endif -->
 		<view class="content">
 			<dz-field label-width="200" label="支付宝账号" v-model="alipayAcc" placeholder="请输入支付宝账号" :border-bottom="true"></dz-field>
 			<dz-field label-width="200" label="真实姓名" v-model="realname" placeholder="请输入真实姓名" :border-bottom="true"></dz-field>

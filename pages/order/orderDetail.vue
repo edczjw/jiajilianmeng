@@ -1,8 +1,10 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar-immersive splitLine scrollRatio="0.3" :isCustom="true" @change="opacityChange" :scrollTop="scrollTop" backgroundColor="#fff" :style="[navbarStyle]">
 			<dz-navbar title="订单详情"></dz-navbar>
 		</dz-navbar-immersive>
+		<!-- #endif -->
 		<dz-navbar
 			:title="'订单详情'"
 			:is-fixed="false"

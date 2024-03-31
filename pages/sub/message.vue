@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='消息中心' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<!-- <dz-tabs :list="tabList" :current="current" :is-scroll="false" bar-height="8" :active-color="theme.dzBaseColor"
 			@change="tabChange" style="position: fixed;width: 100%;z-index: 2;"></dz-tabs> -->
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback" @up="upCallback">

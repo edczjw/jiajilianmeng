@@ -1,7 +1,9 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :isBack="false" :borderBottom="false" :height="1" :background="{background: '#f6f0eb'}">
 		</dz-navbar>
+		<!-- #endif -->
 		<!-- navbar -->
 		<!-- <dz-navbar-immersive splitLine :isCustom="true" @init="initNavigation" @change="opacityChange" scrollRatio="0.3"
 			:scrollTop="scrollTop" :title="barTitle" backgroundColor="#fff" :color="theme.dzMainColor">

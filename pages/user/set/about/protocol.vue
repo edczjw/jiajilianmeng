@@ -1,6 +1,8 @@
 <template>
 	<view class="content">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="title"></dz-navbar>
+		<!-- #endif -->
 		<dz-parse :html="content" lazy-load></dz-parse>
 	</view>
 </template>

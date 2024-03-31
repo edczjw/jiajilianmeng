@@ -14,8 +14,10 @@
 			:border-bottom="false"
 		>
 		</dz-navbar> -->
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :isBack="false" title="社区精选" :titleBold="true" :titleSize="36" :borderBottom="false">
 		</dz-navbar>
+		<!-- #endif -->
 		<view class="pure_top" v-if="shareBannerList.length > 0">
 			<view class="pure_top-view" :style="{ background: 'linear-gradient(90deg, ' + theme.dzBaseDark + ', ' + theme.dzBaseColor + ')', color: theme.dzBaseFontColor }"></view>
 		</view>

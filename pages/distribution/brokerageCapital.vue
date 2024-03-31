@@ -1,7 +1,9 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<!-- 佣金明细 -->
 		<dz-navbar :title="type ? '收益日志' : language.distribution.theCommissionSubsidiary"></dz-navbar>
+		<!-- #endif -->
 		<wwj-scroll-body class="goodlist" @init="mescrollInit" @down="downCallback" @up="upCallback">
 			<view class="content">
 				<view class="item" v-for="(item,index) in promoterRecordList" :key="index">

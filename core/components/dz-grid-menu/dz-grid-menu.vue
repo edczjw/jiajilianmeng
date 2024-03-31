@@ -9,7 +9,7 @@
 	>
 		<view v-if="!isPage" class="dz-scroll-view-item">
 			<dz-grid :col="col" :border="border" :align="align" :hover-class="hoverClass" @click="listTap">
-				<block v-for="(item, index) in ListData" :key="index">
+				<block v-for="(item, index) in ListData" :key="index" >
 					<dz-grid-item
 						v-if="customerService && item.activeMenuType && item.activeMenuType == 'pageView' && item.pageView == 'customerService'"
 						:index="index"
@@ -73,8 +73,9 @@
 		<block v-else>
 			<scroll-view class="dz-scroll-view" scroll-x @scroll="navScroll">
 				<view v-for="(grid, gridIndex) in ListData" :id="'scroll' + gridIndex" :key="gridIndex" class="dz-scroll-view-item">
-					<dz-grid :col="col" :border="border" :align="align" :hover-class="hoverClass" @click="listTap">
-						<block v-for="(item, index) in grid" :key="index">
+					<dz-grid :col="col" :border="border" :align="align" :hover-class="hoverClass" @click="listTap" >
+						<block v-for="(item, index) in grid" :key="index" 
+						>
 							<dz-grid-item
 								v-if="customerService && item.activeMenuType && item.activeMenuType == 'pageView' && item.pageView == 'customerService'"
 								:index="index"
@@ -349,7 +350,7 @@ export default {
 		},
 		listTap(index) {
 			this.$emit('click', index);
-		}
+		}, 
 	}
 };
 </script>

@@ -16,6 +16,7 @@
 					</view>
 					<!--自定义顶部-->
 					<view v-if="item.component == 'dz-head'" ref="profileHead">
+						<!-- #ifndef MP-TOUTIAO -->
 						<dz-navbar :is-fixed="true" :is-back="false" input-align="center" :borderBottom="false"
 							:background="{ background: '#d3ffff' }">
 							<view slot="left" :style="{
@@ -65,6 +66,7 @@
 								<!-- </dz-tag> -->
 							</view>
 						</dz-navbar>
+						<!-- #endif -->
 					</view>
 					<view v-if="item.component == 'wwj-loading'">
 						<wwj-loading v-if="pullDownLoadingShow" :mode="styleLoadingType" :color="$api.theme.dzBaseColor"

@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title="" :is-back="false" :isFixed="false" :background="{background:''}" :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<view class="wrap">
 			<view v-if="showVisitor" class="position-absolute text-dark" style="right: 50rpx; top:100rpx;z-index: 999;" @click="showModal">游客登录</view>
 			<view class="content">
@@ -9,10 +11,12 @@
 					<u-icon name="apple-fill" size="50" color="white"></u-icon>
 					<text class="ml-1" style="font-size: 36rpx;color: white;">通过Apple登录</text>
 				</view>
+				<!-- #ifndef MP-TOUTIAO -->
 				<view v-if="showWechat" class="flex j-center a-center bg-blue text-center p-2 rounded-15 mt-5" @click="wechatLogin">
 					<u-icon name="weixin-fill" size="50" color="white"></u-icon>
 					<text class="ml-1" style="font-size: 36rpx;color: white;">微信登录</text>
 				</view>
+				<!-- #endif -->
 				<view class="flex j-center a-center text-center rounded-15 mt-5 border border-dark" style="border-width: 2rpx;padding: 16rpx;" @click="phoneLogin">
 					<u-icon name="phone-fill" size="50" color="black"></u-icon>
 					<text class="ml-1" style="font-size: 36rpx;color: black;">手机登录</text>

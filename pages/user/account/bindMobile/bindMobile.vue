@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :is-fixed="true" :title="language.bindMobile.titleBindMobile"></dz-navbar>
+		<!-- #endif -->
 		<view class="dz-form">
 			<dz-form>
 				<dz-form-item :label="language.bindMobile.labelMobile" label-width="130">

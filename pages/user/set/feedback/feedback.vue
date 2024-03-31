@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar :title="language.user.feedback"></dz-navbar>
+		<!-- #endif -->
 		<view class="feedback-title">
 			<text>{{ language.user.questionsAndComments }}</text>
 			<view class="feedback-quick" @tap="chooseMsg">

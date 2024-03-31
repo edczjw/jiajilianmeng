@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title='游戏记录' :border-bottom="false"></dz-navbar>
+		<!-- #endif -->
 		<wwj-scroll-body @init="mescrollInit" @down="downCallback" @up="upCallback">
 			<view class="bg-white">
 				

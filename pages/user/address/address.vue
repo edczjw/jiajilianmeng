@@ -1,6 +1,8 @@
 <template>
 	<view class="address-box">
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar input-align="center" :title="language.address.shippingAddress"></dz-navbar>
+		<!-- #endif -->
 		<!-- <view class="search">
 			<dz-search v-model="keyword" placeholder="输入收件人姓名或者手机号查询" @input="changeInput" @custom="search" @focus="inputFocus" :show-action="true"></dz-search>
 		</view> -->

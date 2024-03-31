@@ -10,7 +10,7 @@
 		{
 			"path": "pages/main/index/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "夹机联盟",
 				"enablePullDownRefresh": false,
 				"onReachBottomDistance": 50,
 				"app-plus": {
@@ -49,7 +49,7 @@
 		{
 			"path": "pages/pointsmarket/market",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "积分商城",
 				"onReachBottomDistance": 50,
 				"app-plus": {
 					"titleNView": false
@@ -79,28 +79,28 @@
 				}
 			}
 		},
-		{
-			"path": "pages/sub/activity",
-			"style": {
-				"navigationBarTitleText": "",
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					"titleNView": false
-					// "bounce":false
-				}
-			}
-		},
-		{
-			"path": "pages/sub/h5game",
-			"style": {
-				"navigationBarTitleText": "欢乐抓",
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					// "titleNView": false
-					"bounce":false
-				}
-			}
-		},
+		// {
+		// 	"path": "pages/sub/activity",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"onReachBottomDistance": 50,
+		// 		"app-plus": {
+		// 			"titleNView": false
+		// 			// "bounce":false
+		// 		}
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/sub/h5game",
+		// 	"style": {
+		// 		"navigationBarTitleText": "欢乐抓",
+		// 		"onReachBottomDistance": 50,
+		// 		"app-plus": {
+		// 			// "titleNView": false
+		// 			"bounce":false
+		// 		}
+		// 	}
+		// },
 		{
 			"path": "pages/order/order",
 			"style": {
@@ -305,17 +305,17 @@
 					"titleNView": false
 				}
 			}
-		},
-		{
-			"path": "pages/sub/yzgame",
-			"style": {
-				"navigationBarTitleText": "牧场",
-				"app-plus":{
-					"titleNView":false
-				}
-				
-			}
 		}
+		// ,
+		// {
+		// 	"path": "pages/sub/yzgame",
+		// 	"style": {
+		// 		"navigationBarTitleText": "牧场",
+		// 		"app-plus":{
+		// 			"titleNView":false
+		// 		}
+		// 	}
+		// }
     ],
 	"subPackages":[
 		{
@@ -571,12 +571,12 @@
 			"selectedIconPath": "/static/tabbar/game_selected.png",
 			"text": "卡牌"
 		}, */
-		/* {
-			"pagePath": "pages/sub/yzgame",
-			"iconPath": "/static/tabbar/game.png",
-			"selectedIconPath": "/static/tabbar/game_selected.png",
-			"text": "牧场"
-		}, */ 
+		// {
+		// 	"pagePath": "pages/sub/yzgame",
+		// 	"iconPath": "/static/tabbar/game.png",
+		// 	"selectedIconPath": "/static/tabbar/game_selected.png",
+		// 	"text": "牧场"
+		// }, 
 		{
 			"pagePath": "pages/pointsmarket/market",
 			"iconPath": "/static/tabbar/tab-shop.png",

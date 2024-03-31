@@ -1,6 +1,8 @@
 <template>
 	<view>
+		<!-- #ifndef MP-TOUTIAO -->
 		<dz-navbar title="我的推广" :borderBottom="false"></dz-navbar>
+		<!-- #endif -->
 		<wwj-scroll-body class="goodlist" @init="mescrollInit" @down="downCallback" @up="upCallback">
 			<view v-if="agentList.length > 0" class="card-box" :style="{ marginTop: tabList.length == 3 && current == 0 ? '80rpx' : '184rpx' }">
 				<view class="card-item" v-for="(item, index) in agentList" :key="index">
