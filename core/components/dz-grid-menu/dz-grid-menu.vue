@@ -52,7 +52,7 @@
 						
 						<text class="dz-line-1 dz-m-t-10">{{ item[title] }}</text>
 					</dz-grid-item>
-					<dz-grid-item v-else :index="index" :bgColor="bgColor">
+					<dz-grid-item v-else-if="(item[title]!=='在线客服')" :index="index" :bgColor="bgColor">
 						<view class="grid-icon">
 							<view class="icon">
 								<dz-icon
